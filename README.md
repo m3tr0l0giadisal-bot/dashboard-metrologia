@@ -1,21 +1,21 @@
 # Dashboard de Gestion Metrologica
 
+APP para gestion de equipos y ensayos de Disal.
+
 Dashboard local para visualizar el maestro de instrumentos por sede, planta, linea, tipo de equipo y estado de calibracion.
 
 ## Publicacion en GitHub Pages
 
 Esta app es estatica y puede publicarse directamente desde la rama `main`.
 
-1. Crear un repositorio en GitHub.
-2. Subir esta carpeta completa al repositorio.
-3. En GitHub, abrir `Settings > Pages`.
-4. En `Build and deployment`, seleccionar `Deploy from a branch`.
-5. Elegir la rama `main` y la carpeta `/root`.
+1. En GitHub, abrir `Settings > Pages`.
+2. En `Build and deployment`, seleccionar `Deploy from a branch`.
+3. Elegir la rama `main` y la carpeta `/root`.
 
 La pagina quedara disponible en:
 
 ```text
-https://USUARIO.github.io/REPOSITORIO/
+https://m3tr0l0giadisal-bot.github.io/dashboard-metrologia/
 ```
 
 Nota: el boton `Abrir etiquetas PDF` apunta a un archivo local `file:///C:/...`; desde GitHub Pages solo funcionara si se reemplaza por una URL web o si se agrega el PDF al repositorio con una ruta relativa.
