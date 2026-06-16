@@ -202,6 +202,37 @@ body:not(.login-active) .login-screen {
   font-weight: 700;
 }
 
+.google-login {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.login-divider {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-disabled {
+  width: 100%;
+  justify-content: center;
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -609,37 +640,6 @@ tr:hover td {
 
 .admin-modal-wide {
   width: min(1180px, 100%);
-}
-
-.auth-modal {
-  width: min(460px, 100%);
-}
-
-.auth-body {
-  display: grid;
-  gap: 14px;
-  padding: 20px;
-}
-
-.auth-body label {
-  display: grid;
-  gap: 7px;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.auth-body input {
-  min-height: 44px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 0 12px;
-  color: var(--ink);
-  background: #fff;
-  font-size: 15px;
-  font-weight: 700;
-  text-transform: none;
 }
 
 .auth-status {

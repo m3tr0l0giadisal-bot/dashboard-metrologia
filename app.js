@@ -1,8 +1,9 @@
 const rawRows = window.METROLOGIA_DATA.instrumentos || [];
-const ADMIN_EMAILS = new Set(["m3tr0l0giadisal@gmail.com"]);
+const AUTH_CONFIG = window.METROLOGIA_AUTH_CONFIG || {};
 const READ_ONLY_DOMAIN = "@grupodisal.com.ar";
 const userSessionKey = `disal_metrologia_usuario_${String(window.METROLOGIA_DATA.generado || "base").replace(/[^a-zA-Z0-9]/g, "_")}`;
 let currentUserEmail = "";
+let currentUserRole = "";
 let isAdminMode = false;
 let adminListenersAttached = false;
 const dataVersion = String(window.METROLOGIA_DATA.generado || "base")
@@ -105,6 +106,7 @@ const els = {
     email: document.getElementById("loginEmail"),
     confirm: document.getElementById("loginSubmit"),
     status: document.getElementById("loginStatus"),
+    googleButton: document.getElementById("googleLoginButton"),
     logout: document.querySelector(".logout-button")
   }
 };
@@ -1045,14 +1047,29 @@ function isReadOnlyMode() {
 }
 
 async function getAuthenticatedUserEmail() {
+  const stored = getStoredUserSession();
+  if (stored.email) {
+    currentUserRole = stored.role || "";
+    return stored.email;
+  }
   try {
     const response = await fetch("/.auth/me", { cache: "no-store" });
-    if (!response.ok) return localStorage.getItem(userSessionKey) || "";
+    if (!response.ok) return "";
     const payload = await response.json();
     const principal = payload.clientPrincipal || {};
-    return String(principal.userDetails || localStorage.getItem(userSessionKey) || "").trim().toLowerCase();
+    const roles = Array.isArray(principal.userRoles) ? principal.userRoles : [];
+    currentUserRole = roles.includes("admin") || roles.includes("administrator") ? "admin" : "readOnly";
+    return String(principal.userDetails || "").trim().toLowerCase();
   } catch {
-    return localStorage.getItem(userSessionKey) || "";
+    return "";
+  }
+}
+
+function getStoredUserSession() {
+  try {
+    return JSON.parse(localStorage.getItem(userSessionKey) || "{}");
+  } catch {
+    return {};
   }
 }
 
@@ -1093,6 +1110,7 @@ function handleLogout() {
     return;
   }
   currentUserEmail = "";
+  currentUserRole = "";
   isAdminMode = false;
   localUpdates = {};
   localEquipmentAdds = [];
@@ -1102,10 +1120,11 @@ function handleLogout() {
   showLoginScreen("Sesion cerrada. Ingresar nuevamente para continuar.", "");
 }
 
-function enableUserSession(email, persist = true) {
+function enableUserSession(email, role = "readOnly", persist = true) {
   currentUserEmail = email;
-  isAdminMode = ADMIN_EMAILS.has(email);
-  if (persist) localStorage.setItem(userSessionKey, email);
+  currentUserRole = role;
+  isAdminMode = role === "admin";
+  if (persist) localStorage.setItem(userSessionKey, JSON.stringify({ email, role }));
   localUpdates = isAdminMode ? loadLocalUpdates() : {};
   localEquipmentAdds = isAdminMode ? loadLocalEquipmentAdds() : [];
   rows = buildRowsWithEquipmentAdds();
@@ -1122,15 +1141,65 @@ function confirmLogin() {
     showLoginScreen("Ingresar un correo electronico.", "error");
     return;
   }
-  if (!ADMIN_EMAILS.has(email)) {
-    if (!email.endsWith(READ_ONLY_DOMAIN)) {
-      showLoginScreen("Correo no autorizado. Usar una cuenta @grupodisal.com.ar.", "error");
-      return;
-    }
-    enableUserSession(email);
+  if (!email.endsWith(READ_ONLY_DOMAIN)) {
+    showLoginScreen("Correo no autorizado para lectura. Usar una cuenta @grupodisal.com.ar.", "error");
     return;
   }
-  enableUserSession(email);
+  enableUserSession(email, "readOnly");
+}
+
+async function handleGoogleCredential(response) {
+  if (!AUTH_CONFIG.authEndpoint) {
+    showLoginScreen("Login Google pendiente de configurar: falta authEndpoint.", "error");
+    return;
+  }
+  try {
+    const result = await fetch(AUTH_CONFIG.authEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ credential: response.credential })
+    });
+    if (!result.ok) {
+      showLoginScreen("No se pudo validar la cuenta de Google.", "error");
+      return;
+    }
+    const session = await result.json();
+    const email = String(session.email || "").trim().toLowerCase();
+    const role = session.role === "admin" ? "admin" : "readOnly";
+    if (!email) {
+      showLoginScreen("El proveedor no devolvio un correo valido.", "error");
+      return;
+    }
+    enableUserSession(email, role);
+  } catch {
+    showLoginScreen("No se pudo conectar con el servicio de autenticacion.", "error");
+  }
+}
+
+function initializeGoogleLogin() {
+  if (!els.auth.googleButton) return;
+  if (!AUTH_CONFIG.googleClientId || !AUTH_CONFIG.authEndpoint) {
+    els.auth.googleButton.innerHTML = `<button class="ghost-button auth-disabled" type="button" disabled>Login Google pendiente de configuracion</button>`;
+    return;
+  }
+  const start = () => {
+    if (!window.google?.accounts?.id) {
+      window.setTimeout(start, 250);
+      return;
+    }
+    window.google.accounts.id.initialize({
+      client_id: AUTH_CONFIG.googleClientId,
+      callback: handleGoogleCredential
+    });
+    window.google.accounts.id.renderButton(els.auth.googleButton, {
+      theme: "outline",
+      size: "large",
+      text: "signin_with",
+      shape: "rectangular",
+      width: 320
+    });
+  };
+  start();
 }
 
 function attachAuthListeners() {
@@ -1156,7 +1225,7 @@ function showAccessDenied() {
             <h2>Usuario no autorizado</h2>
           </div>
         </div>
-        <p>Esta aplicacion esta disponible para usuarios @grupodisal.com.ar. El acceso administrador esta reservado para m3tr0l0giadisal@gmail.com.</p>
+        <p>Esta aplicacion esta disponible para usuarios @grupodisal.com.ar. El acceso administrador se valida mediante el proveedor seguro configurado.</p>
       </section>
     `;
   }
@@ -1216,17 +1285,18 @@ async function initializeAccessMode() {
     showLoginScreen();
     return false;
   }
-  isAdminMode = ADMIN_EMAILS.has(currentUserEmail);
+  isAdminMode = currentUserRole === "admin";
   const isGrupoDisalUser = currentUserEmail.endsWith(READ_ONLY_DOMAIN);
   if (currentUserEmail && !isAdminMode && !isGrupoDisalUser) {
     localStorage.removeItem(userSessionKey);
     currentUserEmail = "";
+    currentUserRole = "";
     isAdminMode = false;
     applyUserHeader();
     showLoginScreen("Correo no autorizado. Usar una cuenta @grupodisal.com.ar.", "error");
     return false;
   }
-  enableUserSession(currentUserEmail, false);
+  enableUserSession(currentUserEmail, isAdminMode ? "admin" : "readOnly", false);
   return true;
 }
 
@@ -1244,6 +1314,7 @@ els.search.addEventListener("input", updateDashboard);
 els.reset.addEventListener("click", resetFilters);
 els.export.addEventListener("click", exportCsv);
 attachAuthListeners();
+initializeGoogleLogin();
 window.addEventListener("resize", () => {
   window.clearTimeout(window._chartResize);
   window._chartResize = window.setTimeout(updateDashboard, 120);

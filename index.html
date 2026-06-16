@@ -24,19 +24,21 @@
         <div class="login-copy">
           <p class="section-label">Gestion metrologica</p>
           <h1 id="loginTitle">Acceso al dashboard de equipos</h1>
-          <p>Ingresar con correo corporativo para consultar el estado de instrumentos, calibraciones y etiquetas QR.</p>
+          <p>Ingresar con una cuenta autorizada para consultar el estado de instrumentos, calibraciones y etiquetas QR.</p>
         </div>
         <div class="login-form" aria-label="Formulario de acceso">
+          <div id="googleLoginButton" class="google-login"></div>
+          <div class="login-divider">o ingresar en modo lectura</div>
           <label>
             Correo electronico
             <input id="loginEmail" type="email" autocomplete="email" placeholder="usuario@grupodisal.com.ar">
           </label>
           <div class="login-rules">
-            <span>Lectura: @grupodisal.com.ar</span>
-            <span>Administrador: m3tr0l0giadisal@gmail.com</span>
+            <span>Lectura: cuentas @grupodisal.com.ar</span>
+            <span>Administrador: validado por login seguro de Google</span>
           </div>
           <div id="loginStatus" class="auth-status" role="status" aria-live="polite"></div>
-          <button id="loginSubmit" class="primary-button" type="button">Ingresar</button>
+          <button id="loginSubmit" class="primary-button" type="button">Ingresar como solo lectura</button>
         </div>
       </div>
     </section>
@@ -312,9 +314,11 @@
       </div>
     </section>
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="auth-config.js?v=20260616-google-auth"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="data/instrumentos.js?v=20260616-login"></script>
-    <script src="app.js?v=20260616-login"></script>
+    <script src="app.js?v=20260616-google-auth"></script>
   </body>
 </html>
 
