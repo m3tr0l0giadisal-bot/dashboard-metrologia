@@ -28,7 +28,7 @@ Editar `auth-config.js` despues de crear Google OAuth y el Worker:
 
 ```js
 window.METROLOGIA_AUTH_CONFIG = {
-  googleClientId: "CLIENT_ID_PUBLICO.apps.googleusercontent.com",
+  googleClientId: "876259994510-4kvo2777u3v2cpi15tf3599v8jneg2ht.apps.googleusercontent.com",
   authEndpoint: "https://TU-WORKER.TU-CUENTA.workers.dev"
 };
 ```
@@ -42,6 +42,8 @@ En Cloudflare Worker configurar variables de entorno:
 - `GOOGLE_CLIENT_ID`: mismo Client ID publico de Google.
 - `ADMIN_EMAIL`: correo administrador. No se debe commitear.
 - `ALLOWED_DOMAIN`: `grupodisal.com.ar`.
+
+Ya queda preparado `auth/wrangler.toml.example` con el Client ID publico. Copiarlo como `auth/wrangler.toml` al desplegar el Worker.
 
 ## Google Cloud Console
 

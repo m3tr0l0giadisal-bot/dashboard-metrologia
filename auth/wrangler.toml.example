@@ -1,0 +1,10 @@
+name = "metrologia-google-auth"
+main = "google-auth-worker.js"
+compatibility_date = "2026-06-16"
+
+[vars]
+GOOGLE_CLIENT_ID = "876259994510-4kvo2777u3v2cpi15tf3599v8jneg2ht.apps.googleusercontent.com"
+ALLOWED_DOMAIN = "grupodisal.com.ar"
+
+# Configurar ADMIN_EMAIL como secreto, no en este archivo:
+# wrangler secret put ADMIN_EMAIL
