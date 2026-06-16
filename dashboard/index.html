@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard de Gestion Metrologica</title>
+    <link rel="stylesheet" href="styles.css?v=20260612-maestro-1">
+  </head>
+  <body>
+    <header class="brandbar">
+      <div class="brand-title">
+        <span class="brand-icon" aria-hidden="true">⚖</span>
+        <span>Grupo Disal - Metrología</span>
+      </div>
+      <div class="brand-user">
+        <span class="role-badge">Administrador</span>
+        <span>m3tr0l0giadisal@gmail.com</span>
+        <button class="logout-button" type="button">Salir</button>
+      </div>
+    </header>
+    <section class="topbar">
+      <div>
+        <p class="section-label">Gestion metrologica</p>
+        <h1>Estado de instrumentos y calibraciones</h1>
+      </div>
+      <div class="top-actions">
+        <a class="ghost-button" href="../etiquetas/Etiquetas_Calibracion_Impresion.pdf" target="_blank" rel="noopener">Abrir etiquetas PDF</a>
+        <button id="openAdminDates" class="ghost-button" type="button" hidden>Gestionar fechas</button>
+        <button id="openAdminEquipment" class="ghost-button" type="button" hidden>Gestionar equipos</button>
+        <button id="resetFilters" class="ghost-button" type="button">Limpiar filtros</button>
+        <button id="exportCsv" class="primary-button" type="button">Exportar vista</button>
+      </div>
+    </section>
+
+    <main class="shell">
+      <aside class="filters" aria-label="Filtros del dashboard">
+        <div class="filter-head">
+          <h2>Filtros</h2>
+          <span id="activeCount">0 activos</span>
+        </div>
+        <label>
+          Sede
+          <select id="filterSede"></select>
+        </label>
+        <label>
+          Planta / edificio
+          <select id="filterPlanta"></select>
+        </label>
+        <label>
+          Ubicacion / linea
+          <select id="filterLinea"></select>
+        </label>
+        <label>
+          Tipo de equipo
+          <select id="filterTipo"></select>
+        </label>
+        <label>
+          Estado instrumento
+          <select id="filterEstadoInstrumento"></select>
+        </label>
+        <label>
+          Estado calibracion
+          <select id="filterEstadoCalibracion"></select>
+        </label>
+        <label>
+          Categoria
+          <select id="filterCategoria"></select>
+        </label>
+        <label>
+          Busqueda
+          <input id="searchBox" type="search" placeholder="Codigo, serie, marca, responsable">
+        </label>
+      </aside>
+
+      <section class="content">
+        <section class="summary-grid" aria-label="Indicadores principales">
+          <article class="metric">
+            <span>Total instrumentos</span>
+            <strong id="kpiTotal">0</strong>
+            <small id="kpiScope">Vista filtrada</small>
+          </article>
+          <article class="metric ok">
+            <span>Conformes</span>
+            <strong id="kpiConforme">0</strong>
+            <small id="pctConforme">0%</small>
+          </article>
+          <article class="metric warn">
+            <span>Por vencer</span>
+            <strong id="kpiPorVencer">0</strong>
+            <small id="pctPorVencer">0%</small>
+          </article>
+          <article class="metric danger">
+            <span>Vencidos</span>
+            <strong id="kpiVencido">0</strong>
+            <small id="pctVencido">0%</small>
+          </article>
+          <article class="metric no-aplica">
+            <span>No aplica / fuera de servicio</span>
+            <strong id="kpiFueraServicio">0</strong>
+            <small id="pctFueraServicio">0%</small>
+          </article>
+        </section>
+
+        <section class="analysis-grid">
+          <article class="panel state-panel">
+            <div class="panel-title">
+              <div>
+                <p class="section-label">Distribucion</p>
+                <h2>Estado de calibracion</h2>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="statusDonut" width="280" height="280" aria-label="Grafico de estado de calibracion"></canvas>
+              <div id="statusLegend" class="legend"></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-title">
+              <div>
+                <p class="section-label">Carga</p>
+                <h2>Instrumentos por sede</h2>
+              </div>
+            </div>
+            <canvas id="sedeChart" height="240" aria-label="Grafico de barras por sede"></canvas>
+          </article>
+
+          <article class="panel wide">
+            <div class="panel-title">
+              <div>
+                <p class="section-label">Prioridad</p>
+                <h2>Proximos vencimientos y vencidos</h2>
+              </div>
+              <span id="criticalCount" class="count-chip">0 equipos</span>
+            </div>
+            <div id="criticalList" class="critical-list"></div>
+          </article>
+
+          <article class="panel wide">
+            <div class="panel-title">
+              <div>
+                <p class="section-label">Perfil tecnico</p>
+                <h2>Tipos de equipo con mayor cantidad</h2>
+              </div>
+            </div>
+            <canvas id="tipoChart" height="270" aria-label="Grafico de barras por tipo de equipo"></canvas>
+          </article>
+        </section>
+
+        <section class="panel table-panel">
+          <div class="panel-title">
+            <div>
+              <p class="section-label">Detalle</p>
+              <h2>Listado filtrado</h2>
+            </div>
+            <span id="rowCount" class="count-chip">0 registros</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Sede</th>
+                  <th>Planta</th>
+                  <th>Linea</th>
+                  <th>Tipo</th>
+                  <th>Estado</th>
+                  <th>Calibracion</th>
+                  <th>Vencimiento</th>
+                  <th>Dias</th>
+                  <th>Responsable</th>
+                </tr>
+              </thead>
+              <tbody id="instrumentTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <section id="adminDatesModal" class="modal-backdrop hidden" aria-hidden="true">
+      <div class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="adminDatesTitle">
+        <div class="modal-head">
+          <div>
+            <p class="section-label">Administrador</p>
+            <h2 id="adminDatesTitle">Actualizar calibraciones y vencimientos</h2>
+          </div>
+          <button id="closeAdminDates" class="icon-button" type="button" aria-label="Cerrar">×</button>
+        </div>
+
+        <div class="admin-grid">
+          <article class="admin-card">
+            <h3>Carga individual</h3>
+            <label>
+              Codigo del equipo
+              <input id="adminCode" type="text" list="adminCodeList" placeholder="Seleccionar o escribir codigo">
+              <datalist id="adminCodeList"></datalist>
+            </label>
+            <label>
+              Estado del instrumento
+              <select id="adminInstrumentStatus">
+                <option value="">Sin cambios</option>
+                <option value="CALIBRADO">Calibrado</option>
+                <option value="FUERA DE SERV.">Fuera de servicio</option>
+                <option value="-">-</option>
+              </select>
+            </label>
+            <label>
+              Fecha de calibracion
+              <input id="adminCalDate" type="date">
+            </label>
+            <label>
+              Vencimiento
+              <input id="adminDueDate" type="date">
+            </label>
+            <label>
+              Estado de calibracion
+              <select id="adminCalibrationStatus">
+                <option value="">Calcular por vencimiento</option>
+                <option value="CONFORME">Conforme</option>
+                <option value="POR VENCER">Por vencer</option>
+                <option value="VENCIDO">Vencido</option>
+                <option value="NO APLICA">No aplica</option>
+                <option value="-">-</option>
+              </select>
+            </label>
+            <button id="saveSingleUpdate" class="primary-button" type="button">Actualizar equipo</button>
+          </article>
+
+          <article class="admin-card">
+            <h3>Carga masiva</h3>
+            <p class="helper-text">Subir Excel o CSV con columnas de codigo, fecha de calibracion, vencimiento y opcionalmente estado de calibracion.</p>
+            <input id="bulkDateFile" type="file" accept=".xlsx,.xls,.csv">
+            <button id="applyBulkUpdate" class="primary-button" type="button">Aplicar archivo</button>
+            <button id="downloadUpdatedData" class="ghost-button" type="button">Descargar maestro actualizado</button>
+            <button id="clearLocalUpdates" class="danger-button" type="button">Borrar cambios locales</button>
+          </article>
+        </div>
+
+        <div id="adminUpdateStatus" class="admin-status">Sin cambios aplicados en esta sesion.</div>
+      </div>
+    </section>
+
+    <section id="adminEquipmentModal" class="modal-backdrop hidden" aria-hidden="true">
+      <div class="admin-modal admin-modal-wide" role="dialog" aria-modal="true" aria-labelledby="adminEquipmentTitle">
+        <div class="modal-head">
+          <div>
+            <p class="section-label">Administrador</p>
+            <h2 id="adminEquipmentTitle">Gestionar equipos</h2>
+          </div>
+          <button id="closeAdminEquipment" class="icon-button" type="button" aria-label="Cerrar">×</button>
+        </div>
+
+        <div class="admin-grid equipment-grid">
+          <article class="admin-card">
+            <h3>Alta desde maestro</h3>
+            <p class="helper-text">Subir maestro Excel o CSV para detectar codigos que estan en el maestro y no figuran en el dashboard.</p>
+            <input id="equipmentMasterFile" type="file" accept=".xlsx,.xls,.csv">
+            <button id="detectMissingEquipment" class="primary-button" type="button">Detectar faltantes</button>
+            <button id="addSelectedEquipment" class="ghost-button" type="button">Agregar seleccionados</button>
+          </article>
+
+          <article class="admin-card">
+            <h3>Datos locales</h3>
+            <p class="helper-text">Los equipos agregados quedan en este navegador hasta descargar el archivo actualizado.</p>
+            <button id="downloadEquipmentData" class="primary-button" type="button">Descargar maestro actualizado</button>
+            <button id="clearAddedEquipment" class="danger-button" type="button">Borrar equipos agregados locales</button>
+          </article>
+        </div>
+
+        <div id="adminEquipmentStatus" class="admin-status">Sin equipos agregados en esta sesion.</div>
+        <div class="equipment-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Sel.</th>
+                <th>Codigo</th>
+                <th>Sede</th>
+                <th>Planta</th>
+                <th>Linea</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Calibracion</th>
+                <th>Vencimiento</th>
+              </tr>
+            </thead>
+            <tbody id="missingEquipmentTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="data/instrumentos.js?v=20260612-maestro-1"></script>
+    <script src="app.js?v=20260612-maestro-1"></script>
+  </body>
+</html>
+

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard de Gestion Metrologica</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20260616-publicacion-roles">
   </head>
   <body>
     <header class="brandbar">
@@ -24,8 +24,9 @@
         <h1>Estado de instrumentos y calibraciones</h1>
       </div>
       <div class="top-actions">
-        <a class="ghost-button" href="file:///C:/Users/drivero/OneDrive%20-%20GRUPODISAL/Documentos/Gesti%C3%B3n%20Metrol%C3%B3gica/Proyectos/Automatizacion%20de%20Gersti%C3%B3n%20de%20Calibraciones/02_Etiquetas_Calibracion/etiquetas/Etiquetas_Calibracion_Impresion.pdf" target="_blank" rel="noopener">Abrir etiquetas PDF</a>
-        <button id="openAdminDates" class="ghost-button" type="button">Gestionar fechas</button>
+        <a class="ghost-button" href="etiquetas/Etiquetas_Calibracion_Impresion.pdf" target="_blank" rel="noopener">Abrir etiquetas PDF</a>
+        <button id="openAdminDates" class="ghost-button" type="button" hidden>Gestionar fechas</button>
+        <button id="openAdminEquipment" class="ghost-button" type="button" hidden>Gestionar equipos</button>
         <button id="resetFilters" class="ghost-button" type="button">Limpiar filtros</button>
         <button id="exportCsv" class="primary-button" type="button">Exportar vista</button>
       </div>
@@ -93,8 +94,8 @@
             <strong id="kpiVencido">0</strong>
             <small id="pctVencido">0%</small>
           </article>
-          <article class="metric neutral">
-            <span>Fuera de servicio</span>
+          <article class="metric no-aplica">
+            <span>No aplica / fuera de servicio</span>
             <strong id="kpiFueraServicio">0</strong>
             <small id="pctFueraServicio">0%</small>
           </article>
@@ -196,6 +197,15 @@
               <datalist id="adminCodeList"></datalist>
             </label>
             <label>
+              Estado del instrumento
+              <select id="adminInstrumentStatus">
+                <option value="">Sin cambios</option>
+                <option value="CALIBRADO">Calibrado</option>
+                <option value="FUERA DE SERV.">Fuera de servicio</option>
+                <option value="-">-</option>
+              </select>
+            </label>
+            <label>
               Fecha de calibracion
               <input id="adminCalDate" type="date">
             </label>
@@ -210,6 +220,7 @@
                 <option value="CONFORME">Conforme</option>
                 <option value="POR VENCER">Por vencer</option>
                 <option value="VENCIDO">Vencido</option>
+                <option value="NO APLICA">No aplica</option>
                 <option value="-">-</option>
               </select>
             </label>
@@ -230,9 +241,59 @@
       </div>
     </section>
 
+    <section id="adminEquipmentModal" class="modal-backdrop hidden" aria-hidden="true">
+      <div class="admin-modal admin-modal-wide" role="dialog" aria-modal="true" aria-labelledby="adminEquipmentTitle">
+        <div class="modal-head">
+          <div>
+            <p class="section-label">Administrador</p>
+            <h2 id="adminEquipmentTitle">Gestionar equipos</h2>
+          </div>
+          <button id="closeAdminEquipment" class="icon-button" type="button" aria-label="Cerrar">×</button>
+        </div>
+
+        <div class="admin-grid equipment-grid">
+          <article class="admin-card">
+            <h3>Alta desde maestro</h3>
+            <p class="helper-text">Subir maestro Excel o CSV para detectar codigos que estan en el maestro y no figuran en el dashboard.</p>
+            <input id="equipmentMasterFile" type="file" accept=".xlsx,.xls,.csv">
+            <button id="detectMissingEquipment" class="primary-button" type="button">Detectar faltantes</button>
+            <button id="addSelectedEquipment" class="ghost-button" type="button">Agregar seleccionados</button>
+          </article>
+
+          <article class="admin-card">
+            <h3>Datos locales</h3>
+            <p class="helper-text">Los equipos agregados quedan en este navegador hasta descargar el archivo actualizado.</p>
+            <button id="downloadEquipmentData" class="primary-button" type="button">Descargar maestro actualizado</button>
+            <button id="clearAddedEquipment" class="danger-button" type="button">Borrar equipos agregados locales</button>
+          </article>
+        </div>
+
+        <div id="adminEquipmentStatus" class="admin-status">Sin equipos agregados en esta sesion.</div>
+        <div class="equipment-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Sel.</th>
+                <th>Codigo</th>
+                <th>Sede</th>
+                <th>Planta</th>
+                <th>Linea</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Calibracion</th>
+                <th>Vencimiento</th>
+              </tr>
+            </thead>
+            <tbody id="missingEquipmentTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="data/instrumentos.js"></script>
-    <script src="app.js"></script>
+    <script src="data/instrumentos.js?v=20260616-publicacion-roles"></script>
+    <script src="app.js?v=20260616-publicacion-roles"></script>
   </body>
 </html>
+
 
