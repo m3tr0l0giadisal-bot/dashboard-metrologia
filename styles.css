@@ -77,7 +77,8 @@ select {
   font-weight: 900;
 }
 
-.logout-button {
+.logout-button,
+.admin-access-button {
   min-height: 32px;
   padding: 0 12px;
   border-radius: 5px;
@@ -86,6 +87,17 @@ select {
   color: #fff;
   cursor: pointer;
   font-weight: 800;
+}
+
+.admin-access-button {
+  background: #fff;
+  color: #07356a;
+  border-color: #fff;
+}
+
+.logout-button[hidden],
+.admin-access-button[hidden] {
+  display: none;
 }
 
 .topbar {
@@ -495,6 +507,52 @@ tr:hover td {
 
 .admin-modal-wide {
   width: min(1180px, 100%);
+}
+
+.auth-modal {
+  width: min(460px, 100%);
+}
+
+.auth-body {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+
+.auth-body label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.auth-body input {
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: none;
+}
+
+.auth-status {
+  min-height: 20px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.auth-status.error {
+  color: var(--red);
+}
+
+.auth-status.success {
+  color: var(--green);
 }
 
 .modal-head {

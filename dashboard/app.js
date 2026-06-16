@@ -1,6 +1,7 @@
 const rawRows = window.METROLOGIA_DATA.instrumentos || [];
 const ADMIN_EMAILS = new Set(["m3tr0l0giadisal@gmail.com"]);
 const READ_ONLY_DOMAIN = "@grupodisal.com.ar";
+const adminSessionKey = `disal_metrologia_admin_session_${String(window.METROLOGIA_DATA.generado || "base").replace(/[^a-zA-Z0-9]/g, "_")}`;
 let currentUserEmail = "";
 let isAdminMode = false;
 let adminListenersAttached = false;
@@ -97,6 +98,15 @@ const els = {
     clear: document.getElementById("clearAddedEquipment"),
     status: document.getElementById("adminEquipmentStatus"),
     table: document.getElementById("missingEquipmentTable")
+  },
+  auth: {
+    open: document.getElementById("adminAccessButton"),
+    modal: document.getElementById("adminAuthModal"),
+    close: document.getElementById("closeAdminAuth"),
+    email: document.getElementById("adminAuthEmail"),
+    confirm: document.getElementById("confirmAdminAuth"),
+    status: document.getElementById("adminAuthStatus"),
+    logout: document.querySelector(".logout-button")
   }
 };
 
@@ -1038,12 +1048,12 @@ function isReadOnlyMode() {
 async function getAuthenticatedUserEmail() {
   try {
     const response = await fetch("/.auth/me", { cache: "no-store" });
-    if (!response.ok) return "";
+    if (!response.ok) return localStorage.getItem(adminSessionKey) || "";
     const payload = await response.json();
     const principal = payload.clientPrincipal || {};
-    return String(principal.userDetails || "").trim().toLowerCase();
+    return String(principal.userDetails || localStorage.getItem(adminSessionKey) || "").trim().toLowerCase();
   } catch {
-    return "";
+    return localStorage.getItem(adminSessionKey) || "";
   }
 }
 
@@ -1056,12 +1066,88 @@ function setAdminButtonsVisible(visible) {
 function applyUserHeader() {
   const role = document.querySelector(".role-badge");
   const user = document.querySelector(".brand-user span:nth-child(2)");
-  const logout = document.querySelector(".logout-button");
+  const logout = els.auth.logout;
   if (role) role.textContent = isAdminMode ? "Administrador" : "Solo lectura";
   if (user) user.textContent = currentUserEmail || "Usuarios Grupo Disal";
-  if (logout) {
-    logout.addEventListener("click", () => {
-      window.location.href = "/.auth/logout?post_logout_redirect_uri=/";
+  if (els.auth.open) els.auth.open.hidden = isAdminMode;
+  if (logout) logout.hidden = !isAdminMode;
+}
+
+function handleLogout() {
+  localStorage.removeItem(adminSessionKey);
+  if (location.hostname.endsWith("azurestaticapps.net")) {
+    window.location.href = "/.auth/logout?post_logout_redirect_uri=/";
+    return;
+  }
+  currentUserEmail = "";
+  isAdminMode = false;
+  localUpdates = {};
+  localEquipmentAdds = [];
+  rows = buildRowsWithEquipmentAdds();
+  setAdminButtonsVisible(false);
+  applyUserHeader();
+  updateDashboard();
+}
+
+function openAdminAuth() {
+  if (!els.auth.modal) return;
+  els.auth.modal.classList.remove("hidden");
+  els.auth.modal.setAttribute("aria-hidden", "false");
+  els.auth.email.value = "";
+  setAdminAuthStatus("Ingresar el correo administrador habilitado.", "");
+  window.setTimeout(() => els.auth.email.focus(), 80);
+}
+
+function closeAdminAuth() {
+  if (!els.auth.modal) return;
+  els.auth.modal.classList.add("hidden");
+  els.auth.modal.setAttribute("aria-hidden", "true");
+}
+
+function setAdminAuthStatus(message, type = "") {
+  if (!els.auth.status) return;
+  els.auth.status.textContent = message;
+  els.auth.status.className = `auth-status ${type}`.trim();
+}
+
+function enableAdminSession(email) {
+  currentUserEmail = email;
+  isAdminMode = true;
+  localStorage.setItem(adminSessionKey, email);
+  localUpdates = loadLocalUpdates();
+  localEquipmentAdds = loadLocalEquipmentAdds();
+  rows = buildRowsWithEquipmentAdds();
+  setAdminButtonsVisible(true);
+  attachAdminListeners();
+  applyUserHeader();
+  updateDashboard();
+}
+
+function confirmAdminAuth() {
+  const email = String(els.auth.email.value || "").trim().toLowerCase();
+  if (!ADMIN_EMAILS.has(email)) {
+    setAdminAuthStatus("Correo no habilitado como administrador.", "error");
+    return;
+  }
+  enableAdminSession(email);
+  setAdminAuthStatus("Acceso administrador habilitado.", "success");
+  window.setTimeout(closeAdminAuth, 250);
+}
+
+function attachAuthListeners() {
+  if (els.auth.open) els.auth.open.addEventListener("click", openAdminAuth);
+  if (els.auth.close) els.auth.close.addEventListener("click", closeAdminAuth);
+  if (els.auth.confirm) els.auth.confirm.addEventListener("click", confirmAdminAuth);
+  if (els.auth.logout) els.auth.logout.addEventListener("click", handleLogout);
+  if (els.auth.modal) {
+    els.auth.modal.addEventListener("click", (event) => {
+      if (event.target === els.auth.modal) closeAdminAuth();
+    });
+  }
+  if (els.auth.email) {
+    els.auth.email.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") confirmAdminAuth();
+      if (event.key === "Escape") closeAdminAuth();
     });
   }
 }
@@ -1165,6 +1251,7 @@ Object.values(els.filters).forEach((select) => select.addEventListener("change",
 els.search.addEventListener("input", updateDashboard);
 els.reset.addEventListener("click", resetFilters);
 els.export.addEventListener("click", exportCsv);
+attachAuthListeners();
 window.addEventListener("resize", () => {
   window.clearTimeout(window._chartResize);
   window._chartResize = window.setTimeout(updateDashboard, 120);
