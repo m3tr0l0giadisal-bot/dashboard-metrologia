@@ -1,7 +1,7 @@
 const rawRows = window.METROLOGIA_DATA.instrumentos || [];
 const ADMIN_EMAILS = new Set(["m3tr0l0giadisal@gmail.com"]);
 const READ_ONLY_DOMAIN = "@grupodisal.com.ar";
-const adminSessionKey = `disal_metrologia_admin_session_${String(window.METROLOGIA_DATA.generado || "base").replace(/[^a-zA-Z0-9]/g, "_")}`;
+const userSessionKey = `disal_metrologia_usuario_${String(window.METROLOGIA_DATA.generado || "base").replace(/[^a-zA-Z0-9]/g, "_")}`;
 let currentUserEmail = "";
 let isAdminMode = false;
 let adminListenersAttached = false;
@@ -100,12 +100,11 @@ const els = {
     table: document.getElementById("missingEquipmentTable")
   },
   auth: {
-    open: document.getElementById("adminAccessButton"),
-    modal: document.getElementById("adminAuthModal"),
-    close: document.getElementById("closeAdminAuth"),
-    email: document.getElementById("adminAuthEmail"),
-    confirm: document.getElementById("confirmAdminAuth"),
-    status: document.getElementById("adminAuthStatus"),
+    screen: document.getElementById("loginScreen"),
+    switchUser: document.getElementById("adminAccessButton"),
+    email: document.getElementById("loginEmail"),
+    confirm: document.getElementById("loginSubmit"),
+    status: document.getElementById("loginStatus"),
     logout: document.querySelector(".logout-button")
   }
 };
@@ -1048,12 +1047,12 @@ function isReadOnlyMode() {
 async function getAuthenticatedUserEmail() {
   try {
     const response = await fetch("/.auth/me", { cache: "no-store" });
-    if (!response.ok) return localStorage.getItem(adminSessionKey) || "";
+    if (!response.ok) return localStorage.getItem(userSessionKey) || "";
     const payload = await response.json();
     const principal = payload.clientPrincipal || {};
-    return String(principal.userDetails || localStorage.getItem(adminSessionKey) || "").trim().toLowerCase();
+    return String(principal.userDetails || localStorage.getItem(userSessionKey) || "").trim().toLowerCase();
   } catch {
-    return localStorage.getItem(adminSessionKey) || "";
+    return localStorage.getItem(userSessionKey) || "";
   }
 }
 
@@ -1067,14 +1066,28 @@ function applyUserHeader() {
   const role = document.querySelector(".role-badge");
   const user = document.querySelector(".brand-user span:nth-child(2)");
   const logout = els.auth.logout;
-  if (role) role.textContent = isAdminMode ? "Administrador" : "Solo lectura";
-  if (user) user.textContent = currentUserEmail || "Usuarios Grupo Disal";
-  if (els.auth.open) els.auth.open.hidden = isAdminMode;
-  if (logout) logout.hidden = !isAdminMode;
+  if (role) role.textContent = currentUserEmail ? isAdminMode ? "Administrador" : "Solo lectura" : "Identificacion";
+  if (user) user.textContent = currentUserEmail || "Sesion no iniciada";
+  if (els.auth.switchUser) els.auth.switchUser.hidden = true;
+  if (logout) logout.hidden = !currentUserEmail;
+}
+
+function showLoginScreen(message = "", type = "") {
+  document.body.classList.add("login-active");
+  setAdminButtonsVisible(false);
+  if (els.auth.status) {
+    els.auth.status.textContent = message;
+    els.auth.status.className = `auth-status ${type}`.trim();
+  }
+  window.setTimeout(() => els.auth.email?.focus(), 80);
+}
+
+function hideLoginScreen() {
+  document.body.classList.remove("login-active");
 }
 
 function handleLogout() {
-  localStorage.removeItem(adminSessionKey);
+  localStorage.removeItem(userSessionKey);
   if (location.hostname.endsWith("azurestaticapps.net")) {
     window.location.href = "/.auth/logout?post_logout_redirect_uri=/";
     return;
@@ -1086,68 +1099,47 @@ function handleLogout() {
   rows = buildRowsWithEquipmentAdds();
   setAdminButtonsVisible(false);
   applyUserHeader();
-  updateDashboard();
+  showLoginScreen("Sesion cerrada. Ingresar nuevamente para continuar.", "");
 }
 
-function openAdminAuth() {
-  if (!els.auth.modal) return;
-  els.auth.modal.classList.remove("hidden");
-  els.auth.modal.setAttribute("aria-hidden", "false");
-  els.auth.email.value = "";
-  setAdminAuthStatus("Ingresar el correo administrador habilitado.", "");
-  window.setTimeout(() => els.auth.email.focus(), 80);
-}
-
-function closeAdminAuth() {
-  if (!els.auth.modal) return;
-  els.auth.modal.classList.add("hidden");
-  els.auth.modal.setAttribute("aria-hidden", "true");
-}
-
-function setAdminAuthStatus(message, type = "") {
-  if (!els.auth.status) return;
-  els.auth.status.textContent = message;
-  els.auth.status.className = `auth-status ${type}`.trim();
-}
-
-function enableAdminSession(email) {
+function enableUserSession(email, persist = true) {
   currentUserEmail = email;
-  isAdminMode = true;
-  localStorage.setItem(adminSessionKey, email);
-  localUpdates = loadLocalUpdates();
-  localEquipmentAdds = loadLocalEquipmentAdds();
+  isAdminMode = ADMIN_EMAILS.has(email);
+  if (persist) localStorage.setItem(userSessionKey, email);
+  localUpdates = isAdminMode ? loadLocalUpdates() : {};
+  localEquipmentAdds = isAdminMode ? loadLocalEquipmentAdds() : [];
   rows = buildRowsWithEquipmentAdds();
-  setAdminButtonsVisible(true);
-  attachAdminListeners();
+  setAdminButtonsVisible(isAdminMode);
+  if (isAdminMode) attachAdminListeners();
   applyUserHeader();
+  hideLoginScreen();
   updateDashboard();
 }
 
-function confirmAdminAuth() {
+function confirmLogin() {
   const email = String(els.auth.email.value || "").trim().toLowerCase();
-  if (!ADMIN_EMAILS.has(email)) {
-    setAdminAuthStatus("Correo no habilitado como administrador.", "error");
+  if (!email) {
+    showLoginScreen("Ingresar un correo electronico.", "error");
     return;
   }
-  enableAdminSession(email);
-  setAdminAuthStatus("Acceso administrador habilitado.", "success");
-  window.setTimeout(closeAdminAuth, 250);
+  if (!ADMIN_EMAILS.has(email)) {
+    if (!email.endsWith(READ_ONLY_DOMAIN)) {
+      showLoginScreen("Correo no autorizado. Usar una cuenta @grupodisal.com.ar.", "error");
+      return;
+    }
+    enableUserSession(email);
+    return;
+  }
+  enableUserSession(email);
 }
 
 function attachAuthListeners() {
-  if (els.auth.open) els.auth.open.addEventListener("click", openAdminAuth);
-  if (els.auth.close) els.auth.close.addEventListener("click", closeAdminAuth);
-  if (els.auth.confirm) els.auth.confirm.addEventListener("click", confirmAdminAuth);
+  if (els.auth.switchUser) els.auth.switchUser.addEventListener("click", handleLogout);
+  if (els.auth.confirm) els.auth.confirm.addEventListener("click", confirmLogin);
   if (els.auth.logout) els.auth.logout.addEventListener("click", handleLogout);
-  if (els.auth.modal) {
-    els.auth.modal.addEventListener("click", (event) => {
-      if (event.target === els.auth.modal) closeAdminAuth();
-    });
-  }
   if (els.auth.email) {
     els.auth.email.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") confirmAdminAuth();
-      if (event.key === "Escape") closeAdminAuth();
+      if (event.key === "Enter") confirmLogin();
     });
   }
 }
@@ -1219,22 +1211,22 @@ function attachAdminListeners() {
 
 async function initializeAccessMode() {
   currentUserEmail = await getAuthenticatedUserEmail();
-  isAdminMode = ADMIN_EMAILS.has(currentUserEmail);
-  const isGrupoDisalUser = currentUserEmail.endsWith(READ_ONLY_DOMAIN);
-  applyUserHeader();
-  if (currentUserEmail && !isAdminMode && !isGrupoDisalUser) {
-    showAccessDenied();
+  if (!currentUserEmail) {
+    applyUserHeader();
+    showLoginScreen();
     return false;
   }
-  if (isAdminMode) {
-    localUpdates = loadLocalUpdates();
-    localEquipmentAdds = loadLocalEquipmentAdds();
-    rows = buildRowsWithEquipmentAdds();
-    setAdminButtonsVisible(true);
-    attachAdminListeners();
-  } else {
-    setAdminButtonsVisible(false);
+  isAdminMode = ADMIN_EMAILS.has(currentUserEmail);
+  const isGrupoDisalUser = currentUserEmail.endsWith(READ_ONLY_DOMAIN);
+  if (currentUserEmail && !isAdminMode && !isGrupoDisalUser) {
+    localStorage.removeItem(userSessionKey);
+    currentUserEmail = "";
+    isAdminMode = false;
+    applyUserHeader();
+    showLoginScreen("Correo no autorizado. Usar una cuenta @grupodisal.com.ar.", "error");
+    return false;
   }
+  enableUserSession(currentUserEmail, false);
   return true;
 }
 

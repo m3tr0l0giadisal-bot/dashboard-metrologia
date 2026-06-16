@@ -4,21 +4,42 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard de Gestion Metrologica</title>
-    <link rel="stylesheet" href="styles.css?v=20260616-admin-ux">
+    <link rel="stylesheet" href="styles.css?v=20260616-login">
   </head>
-  <body>
+  <body class="login-active">
     <header class="brandbar">
       <div class="brand-title">
         <span class="brand-icon" aria-hidden="true">⚖</span>
         <span>Grupo Disal - Metrología</span>
       </div>
       <div class="brand-user">
-        <span class="role-badge">Administrador</span>
-        <span>m3tr0l0giadisal@gmail.com</span>
-        <button id="adminAccessButton" class="admin-access-button" type="button">Acceso admin</button>
+        <span class="role-badge">Identificacion</span>
+        <span>Sesion no iniciada</span>
+        <button id="adminAccessButton" class="admin-access-button" type="button" hidden>Cambiar usuario</button>
         <button class="logout-button" type="button" hidden>Salir</button>
       </div>
     </header>
+    <section id="loginScreen" class="login-screen" aria-labelledby="loginTitle">
+      <div class="login-panel">
+        <div class="login-copy">
+          <p class="section-label">Gestion metrologica</p>
+          <h1 id="loginTitle">Acceso al dashboard de equipos</h1>
+          <p>Ingresar con correo corporativo para consultar el estado de instrumentos, calibraciones y etiquetas QR.</p>
+        </div>
+        <div class="login-form" aria-label="Formulario de acceso">
+          <label>
+            Correo electronico
+            <input id="loginEmail" type="email" autocomplete="email" placeholder="usuario@grupodisal.com.ar">
+          </label>
+          <div class="login-rules">
+            <span>Lectura: @grupodisal.com.ar</span>
+            <span>Administrador: m3tr0l0giadisal@gmail.com</span>
+          </div>
+          <div id="loginStatus" class="auth-status" role="status" aria-live="polite"></div>
+          <button id="loginSubmit" class="primary-button" type="button">Ingresar</button>
+        </div>
+      </div>
+    </section>
     <section class="topbar">
       <div>
         <p class="section-label">Gestion metrologica</p>
@@ -291,30 +312,9 @@
       </div>
     </section>
 
-    <section id="adminAuthModal" class="modal-backdrop hidden" aria-hidden="true">
-      <div class="admin-modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="adminAuthTitle">
-        <div class="modal-head">
-          <div>
-            <p class="section-label">Acceso administrador</p>
-            <h2 id="adminAuthTitle">Ingresar a gestion metrologica</h2>
-          </div>
-          <button id="closeAdminAuth" class="icon-button" type="button" aria-label="Cerrar">×</button>
-        </div>
-        <div class="auth-body">
-          <p class="helper-text">En GitHub Pages el acceso administrador habilita las funciones de gestion en este navegador. La validacion corporativa por dominio se activa al publicar detras de Microsoft Entra ID.</p>
-          <label>
-            Correo administrador
-            <input id="adminAuthEmail" type="email" autocomplete="email" placeholder="m3tr0l0giadisal@gmail.com">
-          </label>
-          <div id="adminAuthStatus" class="auth-status" role="status" aria-live="polite"></div>
-          <button id="confirmAdminAuth" class="primary-button" type="button">Ingresar como administrador</button>
-        </div>
-      </div>
-    </section>
-
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="data/instrumentos.js?v=20260616-admin-ux"></script>
-    <script src="app.js?v=20260616-admin-ux"></script>
+    <script src="data/instrumentos.js?v=20260616-login"></script>
+    <script src="app.js?v=20260616-login"></script>
   </body>
 </html>
 

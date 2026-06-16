@@ -24,6 +24,11 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
+body.login-active .topbar,
+body.login-active .shell {
+  display: none;
+}
+
 button,
 input,
 select {
@@ -98,6 +103,103 @@ select {
 .logout-button[hidden],
 .admin-access-button[hidden] {
   display: none;
+}
+
+.login-screen {
+  min-height: calc(100vh - 64px);
+  display: grid;
+  place-items: center;
+  padding: 38px 24px;
+  background:
+    linear-gradient(135deg, rgba(11, 74, 146, 0.08), transparent 42%),
+    var(--bg);
+}
+
+body:not(.login-active) .login-screen {
+  display: none;
+}
+
+.login-panel {
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(300px, 420px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.login-copy {
+  display: grid;
+  align-content: center;
+  gap: 12px;
+  min-height: 360px;
+  padding: 40px;
+  background: #0b4a92;
+  color: #fff;
+}
+
+.login-copy .section-label {
+  color: #f2a51a;
+}
+
+.login-copy h1 {
+  max-width: 520px;
+  font-size: clamp(30px, 4vw, 44px);
+}
+
+.login-copy p:not(.section-label) {
+  max-width: 540px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.login-form {
+  display: grid;
+  align-content: center;
+  gap: 16px;
+  padding: 38px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.login-form input {
+  min-height: 46px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0 13px;
+  color: var(--ink);
+  background: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: none;
+}
+
+.login-form input:focus {
+  outline: 3px solid rgba(47, 111, 176, 0.22);
+  border-color: var(--blue);
+}
+
+.login-rules {
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface-strong);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .topbar {
@@ -676,6 +778,19 @@ tr:hover td {
 }
 
 @media (max-width: 720px) {
+  .login-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .login-copy {
+    min-height: 230px;
+    padding: 30px;
+  }
+
+  .login-form {
+    padding: 28px;
+  }
+
   .brandbar {
     align-items: flex-start;
     flex-direction: column;
