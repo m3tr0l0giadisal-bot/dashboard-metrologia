@@ -106,13 +106,23 @@ select {
 }
 
 .login-screen {
+  position: relative;
+  isolation: isolate;
   min-height: calc(100vh - 64px);
   display: grid;
   place-items: center;
   padding: 38px 24px;
+  background: #f8fbff url("../assets/login/grupo-disal-login-bg.jpg") center bottom / cover no-repeat;
+}
+
+.login-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background:
-    linear-gradient(135deg, rgba(11, 74, 146, 0.08), transparent 42%),
-    var(--bg);
+    linear-gradient(90deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.78) 52%, rgba(255, 255, 255, 0.18)),
+    linear-gradient(180deg, rgba(7, 53, 106, 0.04), rgba(7, 53, 106, 0.14));
 }
 
 body:not(.login-active) .login-screen {
@@ -124,10 +134,15 @@ body:not(.login-active) .login-screen {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(300px, 420px);
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(223, 229, 224, 0.82);
   border-radius: 8px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 22px 60px rgba(7, 17, 29, 0.16);
+  backdrop-filter: blur(6px);
+}
+
+.login-panel > * {
+  min-width: 0;
 }
 
 .login-copy {
@@ -136,7 +151,9 @@ body:not(.login-active) .login-screen {
   gap: 12px;
   min-height: 360px;
   padding: 40px;
-  background: #0b4a92;
+  background:
+    linear-gradient(160deg, rgba(7, 53, 106, 0.98), rgba(11, 74, 146, 0.9)),
+    #0b4a92;
   color: #fff;
 }
 
@@ -174,6 +191,8 @@ body:not(.login-active) .login-screen {
 }
 
 .login-form input {
+  width: 100%;
+  min-width: 0;
   min-height: 46px;
   border: 1px solid var(--border);
   border-radius: 7px;
@@ -778,7 +797,15 @@ tr:hover td {
 }
 
 @media (max-width: 720px) {
+  .login-screen {
+    place-items: start center;
+    padding: 34px 18px;
+    overflow-x: hidden;
+  }
+
   .login-panel {
+    width: 100%;
+    max-width: 430px;
     grid-template-columns: 1fr;
   }
 
@@ -787,14 +814,27 @@ tr:hover td {
     padding: 30px;
   }
 
+  .login-copy h1 {
+    font-size: 30px;
+    overflow-wrap: anywhere;
+  }
+
   .login-form {
     padding: 28px;
+  }
+
+  .login-divider {
+    grid-template-columns: minmax(28px, 1fr) auto minmax(28px, 1fr);
   }
 
   .brandbar {
     align-items: flex-start;
     flex-direction: column;
     padding: 14px 18px;
+  }
+
+  .brand-title {
+    flex-wrap: wrap;
   }
 
   .brand-user {
