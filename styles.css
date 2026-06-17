@@ -127,11 +127,39 @@ select {
     linear-gradient(180deg, rgba(7, 53, 106, 0.04), rgba(7, 53, 106, 0.14));
 }
 
+.login-brand-mark {
+  position: absolute;
+  top: clamp(24px, 5vw, 52px);
+  right: clamp(24px, 7vw, 96px);
+  display: grid;
+  gap: 0;
+  z-index: 0;
+  color: var(--brand-blue);
+  line-height: 0.9;
+  text-align: left;
+  letter-spacing: 0;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  pointer-events: none;
+}
+
+.login-brand-mark span {
+  font-size: 16px;
+  font-weight: 800;
+  opacity: 0.78;
+}
+
+.login-brand-mark strong {
+  font-size: 42px;
+  font-weight: 950;
+}
+
 body:not(.login-active) .login-screen {
   display: none;
 }
 
 .login-panel {
+  position: relative;
+  z-index: 1;
   width: min(980px, 100%);
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(300px, 420px);
@@ -809,6 +837,19 @@ tr:hover td {
     width: 100%;
     max-width: 430px;
     grid-template-columns: 1fr;
+  }
+
+  .login-brand-mark {
+    top: 18px;
+    right: 22px;
+  }
+
+  .login-brand-mark span {
+    font-size: 12px;
+  }
+
+  .login-brand-mark strong {
+    font-size: 30px;
   }
 
   .login-copy {
