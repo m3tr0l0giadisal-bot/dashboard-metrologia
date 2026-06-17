@@ -399,7 +399,7 @@ function drawDonut(canvas, entries) {
     ctx.moveTo(center, center);
     ctx.arc(center, center, radius, angle, angle + slice);
     ctx.closePath();
-    ctx.fillStyle = colors[label] || "#2f6fb0";
+    ctx.fillStyle = colors[label] || "#253b86";
     ctx.fill();
     angle += slice;
   });
@@ -440,7 +440,7 @@ function drawBarChart(canvas, entries, options = {}) {
     ctx.fillStyle = "#4d5752";
     ctx.textAlign = "right";
     ctx.fillText(trimLabel(label, 18), left - 12, y + 16);
-    ctx.fillStyle = options.color || "#2f6fb0";
+    ctx.fillStyle = options.color || "#253b86";
     ctx.fillRect(left, y + 3, Math.max(3, barW), 15);
     ctx.fillStyle = "#202423";
     ctx.textAlign = "left";
@@ -458,13 +458,13 @@ function renderCharts(data) {
   drawDonut(document.getElementById("statusDonut"), statusEntries);
   els.statusLegend.innerHTML = statusEntries.map(([label, count]) => `
     <div class="legend-row">
-      <span class="dot" style="background:${colors[label] || "#2f6fb0"}"></span>
+      <span class="dot" style="background:${colors[label] || "#253b86"}"></span>
       <span>${escapeHtml(label)}</span>
       <strong>${count} (${percent(count, equipmentData.length)})</strong>
     </div>
   `).join("");
 
-  drawBarChart(document.getElementById("sedeChart"), sortedEntries(groupCount(equipmentData, fields.sede), 10), { color: "#2f6fb0" });
+  drawBarChart(document.getElementById("sedeChart"), sortedEntries(groupCount(equipmentData, fields.sede), 10), { color: "#253b86" });
   drawBarChart(document.getElementById("tipoChart"), sortedEntries(groupCount(equipmentData, fields.tipo), 12), { color: "#16805d" });
 }
 
