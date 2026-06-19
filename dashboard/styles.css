@@ -843,6 +843,10 @@ tr:hover td {
 }
 
 @media (max-width: 1180px) {
+  .login-brand-mark {
+    display: none;
+  }
+
   .shell {
     grid-template-columns: 1fr;
   }
@@ -877,10 +881,6 @@ tr:hover td {
     width: min(330px, calc(100vw - 48px));
     max-width: none;
     grid-template-columns: 1fr;
-  }
-
-  .login-brand-mark {
-    display: none;
   }
 
   .login-copy {
