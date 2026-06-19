@@ -151,32 +151,6 @@ select {
     linear-gradient(180deg, rgba(7, 53, 106, 0.04), rgba(7, 53, 106, 0.14));
 }
 
-.login-brand-mark {
-  position: absolute;
-  top: clamp(24px, 5vw, 52px);
-  right: clamp(24px, 7vw, 96px);
-  display: grid;
-  gap: 0;
-  z-index: 0;
-  color: var(--brand-blue);
-  line-height: 0.9;
-  text-align: left;
-  letter-spacing: 0;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
-  pointer-events: none;
-}
-
-.login-brand-mark span {
-  font-size: 16px;
-  font-weight: 800;
-  opacity: 0.78;
-}
-
-.login-brand-mark strong {
-  font-size: 42px;
-  font-weight: 950;
-}
-
 body:not(.login-active) .login-screen {
   display: none;
 }
@@ -843,10 +817,6 @@ tr:hover td {
 }
 
 @media (max-width: 1180px) {
-  .login-brand-mark {
-    display: none;
-  }
-
   .shell {
     grid-template-columns: 1fr;
   }
