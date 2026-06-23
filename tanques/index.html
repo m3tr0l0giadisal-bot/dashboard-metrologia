@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Disal - Dashboard Objetivos Mensuales Tanques 2026 V2</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -1020,9 +1023,11 @@
     const AUTH_CONFIG = window.METROLOGIA_AUTH_CONFIG || {};
     const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
     const OBJETIVO_MENSUAL = [4,6,6,6,5,5,5,5,5,2,6,3];
-    let REALIZADO_MENSUAL_PLANILLA = [2,13,6,8,5,3,0,0,0,0,0,0];
+    let REALIZADO_MENSUAL_PLANILLA = [2,13,6,8,8,8,0,0,0,0,0,0];
     const PLANTAS = ['Latex Blanco','Latex Color','Revoques Text.','Sinteticos','Emulsiones','Resinas'];
+    const TANQUES_BASE_VERSION = '2026-06-23-historico-v2-38-realizados';
     const STORAGE_DATOS_ACTUALIZADOS = 'disal_tanques_v2_datos_actualizados';
+    const STORAGE_BASE_VERSION = 'disal_tanques_v2_base_version';
     let currentUser = null;
 
     const PLAN = [
@@ -1236,6 +1241,7 @@
 
     function persistirDatosActualizados() {
       localStorage.setItem(STORAGE_DATOS_ACTUALIZADOS, JSON.stringify(realizados));
+      localStorage.setItem(STORAGE_BASE_VERSION, TANQUES_BASE_VERSION);
     }
 
     function combinarRealizados(base, adicionales) {
@@ -1251,9 +1257,11 @@
     function cargarDatosPersistidos() {
       try {
         const raw = localStorage.getItem(STORAGE_DATOS_ACTUALIZADOS);
-        if (!raw) return;
-        const datos = JSON.parse(raw);
-        if (!Array.isArray(datos)) return;
+        const datos = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(datos)) {
+          persistirDatosActualizados();
+          return;
+        }
         realizados = combinarRealizados(realizados, datos.filter(r => r.codigo && r.mes));
         reconstruirRealizadosAgrupados();
         persistirDatosActualizados();
