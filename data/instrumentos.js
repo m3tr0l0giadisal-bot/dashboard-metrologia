@@ -4719,11 +4719,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "Eletrónica",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/5/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/5/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "0 a 150 Kg",
       "Rango de trabajo": "1 a 150 Kg",
       "Apreciación": "0,1",
@@ -4762,7 +4762,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -4780,11 +4780,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "Eletrónica",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/5/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/5/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "0 a 800 Kg",
       "Rango de trabajo": "1 a 800 Kg",
       "Apreciación": "0,1",
@@ -4823,7 +4823,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -4841,11 +4841,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "Eletrónica",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/5/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/5/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "0,4 a 31 kg",
       "Rango de trabajo": "0,4 a 31 kg",
       "Apreciación": "0,1",
@@ -4884,7 +4884,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PVM",
