@@ -1069,35 +1069,35 @@
 
     let REALIZADOS = [
       ['00582','Latex Blanco','TK3 LatBco',['Febrero','Marzo','Abril']],
-      ['00592','Latex Blanco','TK1 LatBco',['Marzo','Abril']],
+      ['00592','Latex Blanco','TK1 LatBco',['Marzo','Abril','Junio']],
       ['00593','Latex Blanco','TK2 LatBco',['Febrero']],
-      ['00626','Latex Blanco','TK5 LatBco',['Febrero']],
+      ['00626','Latex Blanco','TK5 LatBco',['Febrero','Junio']],
       ['00627','Latex Blanco','TK6 LatBco',['Febrero','Abril']],
       ['00700','Latex Blanco','TK4 LatBco',['Febrero','Abril','Mayo']],
-      ['00644','Latex Color','TK N3 Latex Color',['Febrero','Abril']],
+      ['00644','Latex Color','TK N3 Latex Color',['Febrero','Abril','Junio']],
       ['00663','Revoques Text.','TK3-TER',['Febrero']],
       ['00664','Revoques Text.','TK4-TER',['Febrero']],
       ['00665','Revoques Text.','TK5-TER',['Febrero']],
       ['00666','Revoques Text.','TK6-TER',['Febrero']],
       ['00640','Sinteticos','TK N6 Sint',['Marzo']],
       ['00643','Sinteticos','TK N3 Sint',['Abril']],
-      ['00649','Sinteticos','TKN1 Sint',[]],
+      ['00649','Sinteticos','TKN1 Sint',['Mayo']],
       ['00650','Sinteticos','TKN2 Sint',['Febrero']],
       ['00651','Sinteticos','TKN4 Sint',['Abril']],
       ['00652','Sinteticos','TKN5 Sint',['Marzo']],
       ['00653','Sinteticos','TKN7 Sint',['Enero']],
       ['00654','Sinteticos','TKN8 Sint',[]],
       ['00655','Sinteticos','TKN9 Sint',['Marzo']],
-      ['00657','Sinteticos','TKN10 Sint',['Abril']],
+      ['00657','Sinteticos','TKN10 Sint',['Abril','Junio']],
       ['00658','Sinteticos','TKN11 Sint',['Enero']],
       ['00659','Sinteticos','TKN12 Sint',['Marzo']],
       ['00660','Sinteticos','TKN13 Sint',['Febrero']],
       ['00141','Emulsiones','Reactor 2',[]],
       ['00143','Emulsiones','Coloide',[]],
       ['00145','Emulsiones','TK2-201',[]],
-      ['00146','Emulsiones','TK2-101',[]],
-      ['00142','Emulsiones','Reactor 1',[]],
-      ['00602','Resinas','Reactor 2 Resinas',['Febrero']],
+      ['00146','Emulsiones','TK2-101',['Mayo']],
+      ['00142','Emulsiones','Reactor 1',['Mayo']],
+      ['00602','Resinas','Reactor 2 Resinas',['Febrero','Junio']],
       ['00601','Resinas','Reactor 1 Resinas',[]]
     ];
 
@@ -1238,14 +1238,25 @@
       localStorage.setItem(STORAGE_DATOS_ACTUALIZADOS, JSON.stringify(realizados));
     }
 
+    function combinarRealizados(base, adicionales) {
+      const combinados = new Map();
+      [...base, ...adicionales].forEach((registro) => {
+        if (!registro || !registro.codigo || !registro.mes) return;
+        const key = `${registro.codigo}|${registro.mes}`;
+        combinados.set(key, { ...combinados.get(key), ...registro });
+      });
+      return [...combinados.values()];
+    }
+
     function cargarDatosPersistidos() {
       try {
         const raw = localStorage.getItem(STORAGE_DATOS_ACTUALIZADOS);
         if (!raw) return;
         const datos = JSON.parse(raw);
         if (!Array.isArray(datos)) return;
-        realizados = datos.filter(r => r.codigo && r.mes);
+        realizados = combinarRealizados(realizados, datos.filter(r => r.codigo && r.mes));
         reconstruirRealizadosAgrupados();
+        persistirDatosActualizados();
       } catch (err) {
         console.warn('No se pudieron cargar datos actualizados persistidos.', err);
       }
