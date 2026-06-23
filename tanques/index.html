@@ -1771,10 +1771,10 @@
         try {
           const nuevos = csvARealizados(String(reader.result || ''));
           if (nuevos.length === 0) throw new Error('No se encontraron verificaciones válidas en el CSV.');
-          realizados = nuevos;
+          realizados = combinarRealizados(nuevos, realizados);
           reconstruirRealizadosAgrupados();
           persistirDatosActualizados();
-          $('admin-status').textContent = `Carga aplicada: ${nuevos.length} verificaciones realizadas.`;
+          $('admin-status').textContent = `Carga combinada: ${nuevos.length} verificaciones leidas del CSV, conservando los datos almacenados en la app.`;
           render();
         } catch (err) {
           $('admin-status').textContent = err.message || 'No se pudo procesar el CSV.';
