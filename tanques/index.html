@@ -257,7 +257,7 @@
       border: 1px solid rgba(255,255,255,0.22);
     }
 
-    button, select, input {
+    button, select, input, textarea {
       font: inherit;
       border-radius: 7px;
       border: 1px solid var(--line);
@@ -265,6 +265,11 @@
       color: var(--ink);
       min-height: 44px;
       padding: 8px 10px;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
     }
 
     button {
@@ -285,6 +290,12 @@
       background: rgba(255,255,255,0.10);
       border-color: rgba(255,255,255,0.30);
       color: #ffffff;
+    }
+
+    button.admin-action {
+      background: #ffffff;
+      border-color: #cbd8e8;
+      color: var(--ink);
     }
 
     button:hover {
@@ -347,6 +358,130 @@
       color: #334155;
       font-size: 12px;
       font-weight: 800;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(7, 24, 39, 0.52);
+    }
+
+    .admin-modal {
+      width: min(940px, 100%);
+      max-height: min(86vh, 760px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      box-shadow: 0 28px 80px rgba(2, 8, 23, 0.34);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.25;
+    }
+
+    .modal-body {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.9fr) minmax(320px, 1.2fr);
+      gap: 18px;
+      padding: 18px 22px;
+      overflow: auto;
+    }
+
+    .modal-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: #f8fafc;
+    }
+
+    .modal-card label,
+    .toolbar label,
+    .admin-panel label {
+      display: grid;
+      gap: 6px;
+      color: #52616f;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .tank-list {
+      max-height: 350px;
+      overflow: auto;
+      display: grid;
+      gap: 8px;
+      padding-right: 4px;
+    }
+
+    .tank-option {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #d7e1ec;
+      border-radius: 7px;
+      background: #ffffff;
+    }
+
+    .tank-option input {
+      min-height: auto;
+      width: 18px;
+      height: 18px;
+      padding: 0;
+    }
+
+    .tank-option strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .tank-option span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 22px;
+      border-top: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .modal-status {
+      margin-top: 12px;
+      color: #1e3a8a;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
     }
 
     label {
@@ -623,6 +758,9 @@
       .session-chip { justify-content: flex-start; }
       .header-actions { width: 100%; }
       .header-actions button { flex: 1; }
+      .modal-body { grid-template-columns: 1fr; }
+      .modal-actions { flex-direction: column-reverse; }
+      .modal-actions button { width: 100%; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -682,6 +820,7 @@
           <div class="meta-chip"><span>Corte</span><strong>Jun 2026</strong></div>
         </div>
         <button onclick="window.print()">Imprimir / PDF</button>
+        <button id="open-manual-checks" class="admin-action" type="button" hidden>Gestionar verificaciones</button>
         <button class="primary" onclick="exportarCSV()">Exportar CSV</button>
         <button class="ghost" onclick="logout()">Salir</button>
       </div>
@@ -808,8 +947,10 @@
                 <th>Equipo</th>
                 <th>Mes plan</th>
                 <th>Mes realizado</th>
+                <th>Fecha realizada</th>
                 <th>Estado</th>
                 <th class="right">Desvio dias</th>
+                <th>Observacion</th>
               </tr>
             </thead>
             <tbody id="detalle"></tbody>
@@ -840,6 +981,38 @@
     </section>
     </main>
   </div>
+
+  <section id="manual-checks-modal" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="manual-checks-title">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow" style="color:#0b4a92;margin-bottom:6px;">Administrador</div>
+          <h2 id="manual-checks-title">Gestionar verificaciones realizadas</h2>
+        </div>
+        <button id="close-manual-checks" class="admin-action" type="button" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-card">
+          <label>Fecha de realizacion
+            <input id="manual-check-date" type="date">
+          </label>
+          <label style="margin-top:14px;">Observacion
+            <textarea id="manual-check-observation" placeholder="Detalle operativo, desvio, responsable o comentario relevante"></textarea>
+          </label>
+          <div id="manual-check-status" class="modal-status">Seleccionar fecha y uno o mas tanques.</div>
+        </div>
+        <div class="modal-card">
+          <label>Tanques
+            <div id="manual-tank-list" class="tank-list"></div>
+          </label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="cancel-manual-checks" type="button">Cancelar</button>
+        <button id="save-manual-checks" class="primary" type="button">Actualizar verificaciones</button>
+      </div>
+    </div>
+  </section>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="../auth-config.js"></script>
@@ -944,6 +1117,40 @@
       return MESES.find(m => m.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === txt) || '';
     }
 
+    function escapeHTML(valor) {
+      return String(valor || '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch]));
+    }
+
+    function fechaInputADMY(valor) {
+      const match = String(valor || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      return match ? `${match[3]}/${match[2]}/${match[1]}` : '';
+    }
+
+    function normalizarFecha(valor) {
+      const txt = String(valor || '').trim();
+      const iso = txt.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (iso) return `${iso[3]}/${iso[2]}/${iso[1]}`;
+      const dmy = txt.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/);
+      if (!dmy) return '';
+      const dd = dmy[1].padStart(2, '0');
+      const mm = dmy[2].padStart(2, '0');
+      const yyyy = dmy[3].length === 2 ? `20${dmy[3]}` : dmy[3];
+      return `${dd}/${mm}/${yyyy}`;
+    }
+
+    function mesDesdeFecha(valor) {
+      const fecha = normalizarFecha(valor);
+      const match = fecha.match(/^\d{2}\/(\d{2})\/\d{4}$/);
+      if (!match) return '';
+      return MESES[Number(match[1]) - 1] || '';
+    }
+
     function normalizarPlanta(valor) {
       const txt = String(valor || '').trim();
       const key = txt.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -1008,8 +1215,10 @@
       const idxPlanta = idx('planta', 'tipo', 'sector');
       const idxEquipo = idx('equipo', 'descripcion', 'tanque');
       const idxMes = idx('mesrealizado', 'mesrealizacion', 'mes', 'realizado');
-      if (idxCodigo < 0 || idxMes < 0) {
-        throw new Error('El CSV debe incluir al menos las columnas codigo y mesRealizado.');
+      const idxFecha = idx('fecharealizacion', 'fecharealizada', 'fecha', 'realizacion');
+      const idxObs = idx('observacion', 'observaciones', 'comentario', 'comentarios');
+      if (idxCodigo < 0 || (idxMes < 0 && idxFecha < 0)) {
+        throw new Error('El CSV debe incluir codigo y mesRealizado o fechaRealizacion.');
       }
 
       return filas.slice(1).map((fila) => {
@@ -1017,9 +1226,11 @@
         const base = PLAN.find(([c]) => c === codigo);
         const planta = normalizarPlanta(fila[idxPlanta]) || (base ? base[1] : '');
         const equipo = String(fila[idxEquipo] || '').trim() || (base ? base[2] : '');
-        const mes = normalizarMes(fila[idxMes]);
+        const fechaRealizacion = idxFecha >= 0 ? normalizarFecha(fila[idxFecha]) : '';
+        const mes = normalizarMes(fila[idxMes]) || mesDesdeFecha(fechaRealizacion);
+        const observacion = idxObs >= 0 ? String(fila[idxObs] || '').trim() : '';
         if (!codigo || !mes) return null;
-        return { codigo, planta, equipo, mes, tipo: 'Realizado' };
+        return { codigo, planta, equipo, mes, tipo: 'Realizado', fechaRealizacion, observacion };
       }).filter(Boolean);
     }
 
@@ -1034,12 +1245,7 @@
         const datos = JSON.parse(raw);
         if (!Array.isArray(datos)) return;
         realizados = datos.filter(r => r.codigo && r.mes);
-        REALIZADOS = Object.values(realizados.reduce((acc, r) => {
-          if (!acc[r.codigo]) acc[r.codigo] = [r.codigo, r.planta, r.equipo, []];
-          if (!acc[r.codigo][3].includes(r.mes)) acc[r.codigo][3].push(r.mes);
-          return acc;
-        }, {}));
-        recalcularRealizadosMensuales();
+        reconstruirRealizadosAgrupados();
       } catch (err) {
         console.warn('No se pudieron cargar datos actualizados persistidos.', err);
       }
@@ -1130,13 +1336,21 @@
           estado = desvio === 0 ? 'Cumplido' : 'Adelantado/extra';
         }
         if (reprog && estado === 'Pendiente') estado = 'Reprogramado';
-        return { ...p, mesPlan: p.mes, mesRealizado, estado, desvio };
+        return {
+          ...p,
+          mesPlan: p.mes,
+          mesRealizado,
+          fechaRealizacion: cercano?.fechaRealizacion || '',
+          observacion: cercano?.observacion || '',
+          estado,
+          desvio
+        };
       });
 
       const planKeys = new Set(plan.map(p => `${p.codigo}|${p.mes}`));
       const extras = realizados
         .filter(r => !planKeys.has(`${r.codigo}|${r.mes}`))
-        .map(r => ({ ...r, mesPlan: '', mesRealizado: r.mes, estado: 'Adelantado/extra', desvio: '' }));
+        .map(r => ({ ...r, mesPlan: '', mesRealizado: r.mes, fechaRealizacion: r.fechaRealizacion || '', observacion: r.observacion || '', estado: 'Adelantado/extra', desvio: '' }));
       return filasPlan.concat(extras);
     }
 
@@ -1267,14 +1481,16 @@
     function renderTablas() {
       const filas = aplicarFiltrosDetalle(detalleCombinado());
       $('detalle').innerHTML = filas.map(f => `<tr>
-        <td><strong>${f.codigo}</strong></td>
-        <td>${f.planta}</td>
-        <td>${f.equipo}</td>
+        <td><strong>${escapeHTML(f.codigo)}</strong></td>
+        <td>${escapeHTML(f.planta)}</td>
+        <td>${escapeHTML(f.equipo)}</td>
         <td>${f.mesPlan || '-'}</td>
         <td>${f.mesRealizado || '-'}</td>
+        <td>${f.fechaRealizacion || '-'}</td>
         <td><span class="pill ${claseEstado(f.estado)}">${f.estado}</span></td>
         <td class="right">${f.desvio === '' ? '-' : f.desvio}</td>
-      </tr>`).join('') || '<tr><td colspan="7" class="center muted">Sin registros con el filtro aplicado</td></tr>';
+        <td>${escapeHTML(f.observacion || '-')}</td>
+      </tr>`).join('') || '<tr><td colspan="9" class="center muted">Sin registros con el filtro aplicado</td></tr>';
 
       const pendientes = pendientesFiltrados();
       $('pendientes').innerHTML = pendientes.map(p => `<tr>
@@ -1316,8 +1532,8 @@
 
     function exportarCSV() {
       const filas = aplicarFiltrosDetalle(detalleCombinado());
-      const header = ['Codigo','Planta','Equipo','Mes plan','Mes realizado','Estado','Desvio meses'];
-      const body = filas.map(f => [f.codigo, f.planta, f.equipo, f.mesPlan || '', f.mesRealizado || '', f.estado, f.desvio].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+      const header = ['Codigo','Planta','Equipo','Mes plan','Mes realizado','Fecha realizada','Estado','Desvio meses','Observacion'];
+      const body = filas.map(f => [f.codigo, f.planta, f.equipo, f.mesPlan || '', f.mesRealizado || '', f.fechaRealizacion || '', f.estado, f.desvio, f.observacion || ''].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
       const blob = new Blob([[header.join(','), ...body].join('\n')], { type: 'text/csv;charset=utf-8;' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -1357,6 +1573,7 @@
       $('session-user').textContent = currentUser.email;
       $('session-role').textContent = currentUser.esAdmin ? 'Administrador' : 'Solo lectura';
       $('admin-panel').classList.toggle('is-visible', currentUser.esAdmin);
+      $('open-manual-checks').hidden = !currentUser.esAdmin;
       render();
     }
 
@@ -1421,6 +1638,99 @@
       render();
     }
 
+    function tanquesUnicos() {
+      return PLAN.map(([codigo, planta, equipo]) => ({ codigo, planta, equipo }))
+        .sort((a, b) => a.codigo.localeCompare(b.codigo));
+    }
+
+    function poblarListaTanquesManual() {
+      const list = $('manual-tank-list');
+      list.innerHTML = tanquesUnicos().map(t => `<label class="tank-option">
+        <input type="checkbox" value="${escapeHTML(t.codigo)}" data-planta="${escapeHTML(t.planta)}" data-equipo="${escapeHTML(t.equipo)}">
+        <span>
+          <strong>${escapeHTML(t.codigo)} - ${escapeHTML(t.equipo)}</strong>
+          <span>${escapeHTML(t.planta)}</span>
+        </span>
+      </label>`).join('');
+    }
+
+    function abrirGestionVerificaciones() {
+      if (!currentUser?.esAdmin) return;
+      poblarListaTanquesManual();
+      const hoy = new Date();
+      const yyyy = hoy.getFullYear();
+      const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+      const dd = String(hoy.getDate()).padStart(2, '0');
+      $('manual-check-date').value = `${yyyy}-${mm}-${dd}`;
+      $('manual-check-observation').value = '';
+      $('manual-check-status').textContent = 'Seleccionar fecha y uno o mas tanques.';
+      $('manual-checks-modal').classList.remove('hidden');
+      $('manual-checks-modal').setAttribute('aria-hidden', 'false');
+      $('manual-check-date').focus();
+    }
+
+    function cerrarGestionVerificaciones() {
+      $('manual-checks-modal').classList.add('hidden');
+      $('manual-checks-modal').setAttribute('aria-hidden', 'true');
+    }
+
+    function reconstruirRealizadosAgrupados() {
+      REALIZADOS = Object.values(realizados.reduce((acc, r) => {
+        if (!acc[r.codigo]) acc[r.codigo] = [r.codigo, r.planta, r.equipo, []];
+        if (!acc[r.codigo][3].includes(r.mes)) acc[r.codigo][3].push(r.mes);
+        return acc;
+      }, {}));
+      recalcularRealizadosMensuales();
+    }
+
+    function guardarVerificacionesManual() {
+      if (!currentUser?.esAdmin) {
+        $('manual-check-status').textContent = 'Solo administradores pueden cargar verificaciones.';
+        return;
+      }
+      const fechaISO = $('manual-check-date').value;
+      const fechaRealizacion = fechaInputADMY(fechaISO);
+      const mes = mesDesdeFecha(fechaISO);
+      const observacion = $('manual-check-observation').value.trim();
+      const seleccionados = [...document.querySelectorAll('#manual-tank-list input[type="checkbox"]:checked')];
+      if (!fechaRealizacion || !mes) {
+        $('manual-check-status').textContent = 'Ingresar una fecha de realizacion valida.';
+        return;
+      }
+      if (seleccionados.length === 0) {
+        $('manual-check-status').textContent = 'Seleccionar al menos un tanque.';
+        return;
+      }
+
+      let actualizados = 0;
+      seleccionados.forEach(input => {
+        const codigo = input.value;
+        const base = PLAN.find(([c]) => c === codigo);
+        const registro = {
+          codigo,
+          planta: base ? base[1] : input.dataset.planta,
+          equipo: base ? base[2] : input.dataset.equipo,
+          mes,
+          tipo: 'Realizado',
+          fechaRealizacion,
+          observacion
+        };
+        const existente = realizados.findIndex(r => r.codigo === codigo && r.mes === mes);
+        if (existente >= 0) {
+          realizados[existente] = { ...realizados[existente], ...registro };
+        } else {
+          realizados.push(registro);
+        }
+        actualizados++;
+      });
+
+      reconstruirRealizadosAgrupados();
+      persistirDatosActualizados();
+      render();
+      seleccionados.forEach(input => { input.checked = false; });
+      $('manual-check-status').textContent = `${actualizados} verificaciones actualizadas para ${mes}.`;
+    }
+
     function logout() {
       sessionStorage.removeItem('disal_tanques_v2_session');
       location.reload();
@@ -1443,12 +1753,7 @@
           const nuevos = csvARealizados(String(reader.result || ''));
           if (nuevos.length === 0) throw new Error('No se encontraron verificaciones válidas en el CSV.');
           realizados = nuevos;
-          REALIZADOS = Object.values(realizados.reduce((acc, r) => {
-            if (!acc[r.codigo]) acc[r.codigo] = [r.codigo, r.planta, r.equipo, []];
-            if (!acc[r.codigo][3].includes(r.mes)) acc[r.codigo][3].push(r.mes);
-            return acc;
-          }, {}));
-          recalcularRealizadosMensuales();
+          reconstruirRealizadosAgrupados();
           persistirDatosActualizados();
           $('admin-status').textContent = `Carga aplicada: ${nuevos.length} verificaciones realizadas.`;
           render();
@@ -1465,6 +1770,16 @@
       $('filtroMes').innerHTML = '<option value="todos">Año completo</option>' + MESES.map(m => `<option value="${m}">${m}</option>`).join('');
       ['filtroPlanta','filtroMes','filtroEstado'].forEach(id => $(id).addEventListener('change', render));
       $('buscar').addEventListener('input', render);
+      $('open-manual-checks').addEventListener('click', abrirGestionVerificaciones);
+      $('close-manual-checks').addEventListener('click', cerrarGestionVerificaciones);
+      $('cancel-manual-checks').addEventListener('click', cerrarGestionVerificaciones);
+      $('save-manual-checks').addEventListener('click', guardarVerificacionesManual);
+      $('manual-checks-modal').addEventListener('click', (event) => {
+        if (event.target === $('manual-checks-modal')) cerrarGestionVerificaciones();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !$('manual-checks-modal').classList.contains('hidden')) cerrarGestionVerificaciones();
+      });
       $('login-form').addEventListener('submit', (ev) => {
         ev.preventDefault();
         iniciarSesion($('login-email').value, false);
