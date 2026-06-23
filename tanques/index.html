@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disal - Dashboard Objetivos Mensuales Tanques 2026 V2</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --blue: #0b4a92;
+      --blue-2: #062b56;
+      --navy: #071827;
+      --ink: #0f172a;
+      --muted: #5f6f84;
+      --line: #d8e0ea;
+      --bg: #eef2f6;
+      --panel: #ffffff;
+      --green: #0f9f6e;
+      --amber: #b77900;
+      --red: #c2410c;
+      --cyan: #0e7490;
+      --gold: #f2a51a;
+      --soft-green: #dcfce7;
+      --soft-amber: #fef3c7;
+      --soft-red: #ffedd5;
+      --soft-blue: #dbeafe;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.10);
+      --shadow-soft: 0 10px 28px rgba(15, 23, 42, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, #eaf0f7 0%, #f7f9fb 42%, #eef2f6 100%);
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    body.locked {
+      overflow: hidden;
+    }
+
+    #login-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(242, 165, 26, 0.18), transparent 28%),
+        linear-gradient(135deg, #062b56 0%, #0b4a92 62%, #0e7490 125%);
+    }
+
+    .login-card {
+      width: min(100%, 430px);
+      background: rgba(255,255,255,0.97);
+      border: 1px solid rgba(255,255,255,0.65);
+      border-radius: 10px;
+      box-shadow: 0 28px 80px rgba(2, 8, 23, 0.35);
+      padding: 28px;
+    }
+
+    .login-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      margin-bottom: 14px;
+      border-radius: 10px;
+      background: var(--blue);
+      color: white;
+      font-weight: 900;
+    }
+
+    .login-card h2 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .login-card p {
+      margin: 8px 0 20px;
+      color: var(--muted);
+    }
+
+    .login-card form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .login-help {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .google-login-button {
+      min-height: 42px;
+      margin-bottom: 14px;
+    }
+
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 2px 0 14px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .login-divider::before,
+    .login-divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: var(--line);
+    }
+
+    .login-error {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #fff7ed;
+      color: #9a3412;
+      border: 1px solid #fed7aa;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    #app-shell {
+      display: none;
+    }
+
+    #app-shell.is-authenticated {
+      display: block;
+    }
+
+    header {
+      background:
+        linear-gradient(135deg, #062b56 0%, #0b4a92 58%, #0e7490 130%);
+      color: white;
+      border-bottom: 5px solid var(--gold);
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 3vw, 40px);
+      line-height: 1.08;
+      letter-spacing: 0;
+      font-weight: 900;
+      max-width: 1080px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: #dceafe;
+      font-size: 14px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: #fff7d6;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 5px rgba(242, 165, 26, 0.20);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      max-width: 440px;
+    }
+
+    .header-meta {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(110px, 1fr));
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .meta-chip {
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.10);
+      border-radius: 8px;
+      padding: 9px 10px;
+      min-height: 58px;
+    }
+
+    .meta-chip span {
+      display: block;
+      color: #b9d6f6;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .meta-chip strong {
+      display: block;
+      color: #ffffff;
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .session-chip {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      color: #dbeafe;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 3px 9px;
+      background: rgba(255,255,255,0.16);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    button, select, input {
+      font: inherit;
+      border-radius: 7px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--ink);
+      min-height: 44px;
+      padding: 8px 10px;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 800;
+      border-color: #9fb4d0;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+      touch-action: manipulation;
+    }
+
+    button.primary {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #111827;
+    }
+
+    button.ghost {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.30);
+      color: #ffffff;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+    }
+
+    button:focus-visible,
+    select:focus-visible,
+    input:focus-visible {
+      outline: 3px solid rgba(242, 165, 26, 0.55);
+      outline-offset: 2px;
+    }
+
+    main {
+      padding: 22px;
+      max-width: 1560px;
+      margin: 0 auto;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 12px;
+      align-items: end;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .admin-panel {
+      display: none;
+      grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr) auto;
+      gap: 12px;
+      align-items: end;
+      margin: 0 0 16px;
+      padding: 14px;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      background: #eff6ff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .admin-panel.is-visible {
+      display: grid;
+    }
+
+    .admin-note {
+      color: #1e3a8a;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .admin-status {
+      color: #334155;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    label {
+      display: grid;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #334155;
+      text-transform: uppercase;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .kpi {
+      position: relative;
+      overflow: hidden;
+      padding: 16px;
+      min-height: 126px;
+      border-left: 5px solid var(--blue);
+    }
+
+    .kpi::after {
+      content: "";
+      position: absolute;
+      inset: auto 12px 10px 12px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(11,74,146,0.12), rgba(14,116,144,0.42));
+    }
+
+    .kpi .label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .kpi .value {
+      font-size: 38px;
+      line-height: 1;
+      font-weight: 900;
+      margin: 10px 0 8px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi .note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .good { border-left-color: var(--green); }
+    .warn { border-left-color: var(--amber); }
+    .risk { border-left-color: var(--red); }
+    .info { border-left-color: var(--cyan); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.55fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel {
+      padding: 16px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .panel-subtitle {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .executive {
+      display: grid;
+      gap: 10px;
+    }
+
+    .callout {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #f8fafc;
+      line-height: 1.35;
+      border-left: 4px solid var(--blue);
+    }
+
+    .callout.good { border-left-color: var(--green); background: #f0fdf4; }
+    .callout.warn { border-left-color: var(--amber); background: #fffbeb; }
+    .callout.risk { border-left-color: var(--red); background: #fff7ed; }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .month-strip {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(88px, 1fr));
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .month {
+      padding: 10px 8px;
+      text-align: center;
+      min-height: 92px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: white;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .month.active {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(11, 74, 146, 0.18), 0 12px 28px rgba(15, 23, 42, 0.12);
+    }
+
+    .month .name {
+      font-size: 12px;
+      font-weight: 900;
+      color: #334155;
+      text-transform: uppercase;
+    }
+
+    .month .pct {
+      font-size: 22px;
+      font-weight: 900;
+      margin: 6px 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .month .mini {
+      font-size: 11px;
+      color: #475569;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 8px;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #eef3f8;
+      color: #334155;
+      font-size: 11px;
+      text-transform: uppercase;
+      text-align: left;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 520px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 78px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .pill.ok { background: var(--soft-green); color: #166534; }
+    .pill.mid { background: var(--soft-amber); color: #92400e; }
+    .pill.low { background: var(--soft-red); color: #9a3412; }
+    .pill.extra { background: var(--soft-blue); color: #1e3a8a; }
+
+    .plant-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .plant {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+    }
+
+    .plant strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .bar {
+      height: 9px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      width: 0%;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .muted { color: var(--muted); }
+    .right { text-align: right; }
+    .center { text-align: center; }
+
+    @media (max-width: 1180px) {
+      header { grid-template-columns: 1fr; }
+      .header-actions { justify-content: flex-start; max-width: none; }
+      .toolbar, .kpis, .grid, .plant-grid, .admin-panel { grid-template-columns: 1fr 1fr; }
+      .month-strip { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 720px) {
+      header, main { padding: 16px; }
+      .toolbar, .kpis, .grid, .plant-grid, .admin-panel { grid-template-columns: 1fr; }
+      .month-strip { grid-template-columns: repeat(2, 1fr); }
+      .header-meta { grid-template-columns: 1fr; }
+      .session-chip { justify-content: flex-start; }
+      .header-actions { width: 100%; }
+      .header-actions button { flex: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+
+    @media print {
+      header { padding: 12px 0; }
+      main { padding: 0; max-width: none; }
+      .toolbar, .header-actions, button { display: none !important; }
+      .card { box-shadow: none; break-inside: avoid; }
+      .table-wrap { max-height: none; overflow: visible; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body class="locked">
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-mark">D</div>
+      <h2>Acceso al dashboard</h2>
+      <p>Verificaciones de tanques de fabricacion 2026</p>
+      <div id="google-login-button" class="google-login-button"></div>
+      <div class="login-divider">o ingresar en modo lectura</div>
+      <form id="login-form">
+        <label>Correo electronico
+          <input id="login-email" type="email" placeholder="usuario@grupodisal.com.ar" autocomplete="email" required>
+        </label>
+        <button class="primary" type="submit">Ingresar como solo lectura</button>
+        <div class="login-error" id="login-error" role="alert"></div>
+      </form>
+      <div class="login-help">
+        Lectura: cuentas @grupodisal.com.ar. Administracion: validada por login seguro de Google.
+      </div>
+    </div>
+  </div>
+
+  <div id="app-shell" aria-hidden="true">
+    <header>
+      <div>
+        <div class="eyebrow">Metrologia industrial | Control 2026</div>
+        <h1>Planificacion de Verificaciones de Tanques de Fabricacion - Disal</h1>
+        <p>Dashboard V2 para seguimiento de objetivos mensuales 2026</p>
+      </div>
+      <div class="header-actions">
+        <div class="session-chip">
+          <span id="session-user">Sin sesion</span>
+          <span class="role-badge" id="session-role">Lectura</span>
+        </div>
+        <div class="header-meta" aria-label="Resumen anual">
+          <div class="meta-chip"><span>Objetivo anual</span><strong id="meta-objetivo">58</strong></div>
+          <div class="meta-chip"><span>Realizado</span><strong id="meta-realizado">37</strong></div>
+          <div class="meta-chip"><span>Corte</span><strong>Jun 2026</strong></div>
+        </div>
+        <button onclick="window.print()">Imprimir / PDF</button>
+        <button class="primary" onclick="exportarCSV()">Exportar CSV</button>
+        <button class="ghost" onclick="logout()">Salir</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="toolbar">
+        <label>Planta
+          <select id="filtroPlanta"></select>
+        </label>
+        <label>Mes
+          <select id="filtroMes"></select>
+        </label>
+        <label>Estado
+          <select id="filtroEstado">
+            <option value="todos">Todos</option>
+            <option value="Cumplido">Cumplido</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Adelantado/extra">Adelantado/extra</option>
+            <option value="Reprogramado">Reprogramado</option>
+          </select>
+        </label>
+        <label>Buscar
+          <input id="buscar" type="search" placeholder="Codigo, equipo o planta">
+        </label>
+        <button onclick="limpiarFiltros()">Limpiar filtros</button>
+      </section>
+
+      <section class="admin-panel" id="admin-panel">
+        <div>
+          <h2>Carga de datos actualizados</h2>
+          <div class="admin-note">Disponible solo en modo administrador. CSV esperado: codigo, planta, equipo y mesRealizado.</div>
+        </div>
+        <label>Archivo CSV
+          <input id="admin-csv" type="file" accept=".csv,text/csv">
+        </label>
+        <button class="primary" onclick="cargarDatosActualizados()">Cargar datos</button>
+        <div class="admin-status" id="admin-status">Sin archivo cargado en esta sesion.</div>
+      </section>
+
+    <section class="kpis">
+      <div class="card kpi">
+        <div class="label">Objetivo mensual</div>
+        <div class="value" id="kpiObjetivo">0</div>
+        <div class="note" id="kpiObjetivoNota">Plan del periodo filtrado</div>
+      </div>
+      <div class="card kpi good">
+        <div class="label">Realizado</div>
+        <div class="value" id="kpiRealizado">0</div>
+        <div class="note">Verificaciones registradas</div>
+      </div>
+      <div class="card kpi info">
+        <div class="label">Cumplimiento</div>
+        <div class="value" id="kpiCumplimiento">0%</div>
+        <div class="note" id="kpiSemaforo">Semaforo mensual</div>
+      </div>
+      <div class="card kpi warn">
+        <div class="label">Brecha</div>
+        <div class="value" id="kpiBrecha">0</div>
+        <div class="note">Realizado - objetivo</div>
+      </div>
+      <div class="card kpi risk">
+        <div class="label">Pendientes</div>
+        <div class="value" id="kpiPendientes">0</div>
+        <div class="note">Objetivos sin registro en el mes</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">Reprogramados</div>
+        <div class="value" id="kpiReprogramados">0</div>
+        <div class="note">Marcados en la matriz original</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card panel">
+        <div class="panel-head">
+          <div>
+            <h2>Objetivo mensual vs realizado</h2>
+            <div class="panel-subtitle">Barras por volumen y linea de cumplimiento porcentual</div>
+          </div>
+          <span class="pill extra">Plan 2026</span>
+        </div>
+        <canvas id="chartMensual" height="120"></canvas>
+      </div>
+      <div class="card panel executive">
+        <div class="panel-head">
+          <div>
+            <h2>Lectura ejecutiva</h2>
+            <div class="panel-subtitle">Resumen automatico segun filtros activos</div>
+          </div>
+        </div>
+        <div class="callout" id="lecturaPeriodo"></div>
+        <div class="callout" id="lecturaAcumulado"></div>
+        <div class="callout" id="lecturaRiesgo"></div>
+      </div>
+    </section>
+
+    <section class="month-strip" id="tiraMeses"></section>
+
+    <section class="card panel" style="margin-bottom:16px;">
+      <div class="panel-head">
+        <div>
+          <h2>Cumplimiento por planta</h2>
+          <div class="panel-subtitle">Lectura comparativa para priorizar seguimiento operativo</div>
+        </div>
+      </div>
+      <div class="plant-grid" id="plantas"></div>
+    </section>
+
+    <section class="grid">
+      <div class="card panel">
+        <div class="panel-head">
+          <div>
+            <h2>Detalle de objetivos y ejecucion</h2>
+            <div class="panel-subtitle">Cruce entre mes planificado, mes realizado y estado</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Planta</th>
+                <th>Equipo</th>
+                <th>Mes plan</th>
+                <th>Mes realizado</th>
+                <th>Estado</th>
+                <th class="right">Desvio dias</th>
+              </tr>
+            </thead>
+            <tbody id="detalle"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card panel">
+        <div class="panel-head">
+          <div>
+            <h2>Pendientes del periodo</h2>
+            <div class="panel-subtitle">Objetivos sin registro asociado en el filtro actual</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Planta</th>
+                <th>Equipo</th>
+                <th>Mes</th>
+              </tr>
+            </thead>
+            <tbody id="pendientes"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="../auth-config.js"></script>
+  <script>
+    const AUTH_CONFIG = window.METROLOGIA_AUTH_CONFIG || {};
+    const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const OBJETIVO_MENSUAL = [4,6,6,6,5,5,5,5,5,2,6,3];
+    let REALIZADO_MENSUAL_PLANILLA = [2,13,6,8,5,3,0,0,0,0,0,0];
+    const PLANTAS = ['Latex Blanco','Latex Color','Revoques Text.','Sinteticos','Emulsiones','Resinas'];
+    const STORAGE_DATOS_ACTUALIZADOS = 'disal_tanques_v2_datos_actualizados';
+    let currentUser = null;
+
+    const PLAN = [
+      ['00582','Latex Blanco','TK3 LatBco',['Enero','Marzo','Abril','Octubre']],
+      ['00592','Latex Blanco','TK1 LatBco',['Marzo','Abril','Julio','Octubre']],
+      ['00593','Latex Blanco','TK2 LatBco',['Febrero','Agosto']],
+      ['00626','Latex Blanco','TK5 LatBco',['Febrero','Agosto']],
+      ['00627','Latex Blanco','TK6 LatBco',['Enero','Abril','Julio']],
+      ['00700','Latex Blanco','TK4 LatBco',['Abril','Mayo','Agosto','Noviembre']],
+      ['00644','Latex Color','TK N3 Latex Color',['Febrero']],
+      ['00663','Revoques Text.','TK3-TER',['Enero','Julio']],
+      ['00664','Revoques Text.','TK4-TER',['Enero','Julio']],
+      ['00665','Revoques Text.','TK5-TER',['Mayo','Agosto']],
+      ['00666','Revoques Text.','TK6-TER',['Agosto']],
+      ['00640','Sinteticos','TK N6 Sint',['Marzo','Septiembre']],
+      ['00643','Sinteticos','TK N3 Sint',['Abril','Noviembre']],
+      ['00649','Sinteticos','TKN1 Sint',['Mayo','Noviembre']],
+      ['00650','Sinteticos','TKN2 Sint',['Febrero','Agosto']],
+      ['00651','Sinteticos','TKN4 Sint',[]],
+      ['00652','Sinteticos','TKN5 Sint',['Marzo','Septiembre']],
+      ['00653','Sinteticos','TKN7 Sint',[]],
+      ['00654','Sinteticos','TKN8 Sint',['Junio','Diciembre']],
+      ['00655','Sinteticos','TKN9 Sint',['Marzo','Septiembre']],
+      ['00657','Sinteticos','TKN10 Sint',['Abril','Noviembre']],
+      ['00658','Sinteticos','TKN11 Sint',[]],
+      ['00659','Sinteticos','TKN12 Sint',['Marzo','Septiembre']],
+      ['00660','Sinteticos','TKN13 Sint',['Febrero','Septiembre']],
+      ['00141','Emulsiones','Reactor 2',['Mayo','Noviembre']],
+      ['00143','Emulsiones','Coloide',['Junio']],
+      ['00145','Emulsiones','TK2-201',['Mayo']],
+      ['00146','Emulsiones','TK2-101',['Junio','Diciembre']],
+      ['00142','Emulsiones','Reactor 1',['Junio','Diciembre']],
+      ['00602','Resinas','Reactor 2 Resinas',['Febrero','Julio']],
+      ['00601','Resinas','Reactor 1 Resinas',['Mayo','Noviembre']]
+    ];
+
+    const REPROGRAMADOS = [
+      ['00665','Revoques Text.','TK5-TER',['Abril']],
+      ['00649','Sinteticos','TKN1 Sint',['Abril']],
+      ['00654','Sinteticos','TKN8 Sint',['Mayo']],
+      ['00146','Emulsiones','TK2-101',['Abril']],
+      ['00142','Emulsiones','Reactor 1',['Abril']]
+    ];
+
+    let REALIZADOS = [
+      ['00582','Latex Blanco','TK3 LatBco',['Febrero','Marzo','Abril']],
+      ['00592','Latex Blanco','TK1 LatBco',['Marzo','Abril']],
+      ['00593','Latex Blanco','TK2 LatBco',['Febrero']],
+      ['00626','Latex Blanco','TK5 LatBco',['Febrero']],
+      ['00627','Latex Blanco','TK6 LatBco',['Febrero','Abril']],
+      ['00700','Latex Blanco','TK4 LatBco',['Febrero','Abril','Mayo']],
+      ['00644','Latex Color','TK N3 Latex Color',['Febrero','Abril']],
+      ['00663','Revoques Text.','TK3-TER',['Febrero']],
+      ['00664','Revoques Text.','TK4-TER',['Febrero']],
+      ['00665','Revoques Text.','TK5-TER',['Febrero']],
+      ['00666','Revoques Text.','TK6-TER',['Febrero']],
+      ['00640','Sinteticos','TK N6 Sint',['Marzo']],
+      ['00643','Sinteticos','TK N3 Sint',['Abril']],
+      ['00649','Sinteticos','TKN1 Sint',[]],
+      ['00650','Sinteticos','TKN2 Sint',['Febrero']],
+      ['00651','Sinteticos','TKN4 Sint',['Abril']],
+      ['00652','Sinteticos','TKN5 Sint',['Marzo']],
+      ['00653','Sinteticos','TKN7 Sint',['Enero']],
+      ['00654','Sinteticos','TKN8 Sint',[]],
+      ['00655','Sinteticos','TKN9 Sint',['Marzo']],
+      ['00657','Sinteticos','TKN10 Sint',['Abril']],
+      ['00658','Sinteticos','TKN11 Sint',['Enero']],
+      ['00659','Sinteticos','TKN12 Sint',['Marzo']],
+      ['00660','Sinteticos','TKN13 Sint',['Febrero']],
+      ['00141','Emulsiones','Reactor 2',[]],
+      ['00143','Emulsiones','Coloide',[]],
+      ['00145','Emulsiones','TK2-201',[]],
+      ['00146','Emulsiones','TK2-101',[]],
+      ['00142','Emulsiones','Reactor 1',[]],
+      ['00602','Resinas','Reactor 2 Resinas',['Febrero']],
+      ['00601','Resinas','Reactor 1 Resinas',[]]
+    ];
+
+    const $ = id => document.getElementById(id);
+    let chart;
+
+    function expandir(tabla, tipo) {
+      return tabla.flatMap(([codigo, planta, equipo, meses]) => meses.map(mes => ({ codigo, planta, equipo, mes, tipo })));
+    }
+
+    function recalcularRealizadosMensuales() {
+      REALIZADO_MENSUAL_PLANILLA = MESES.map(mes => realizados.filter(r => r.mes === mes).length);
+    }
+
+    function normalizarMes(valor) {
+      const txt = String(valor || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      return MESES.find(m => m.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === txt) || '';
+    }
+
+    function normalizarPlanta(valor) {
+      const txt = String(valor || '').trim();
+      const key = txt.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      if (key.includes('latex blanco')) return 'Latex Blanco';
+      if (key.includes('latex color')) return 'Latex Color';
+      if (key.includes('revoques') || key.includes('ter')) return 'Revoques Text.';
+      if (key.includes('sintet')) return 'Sinteticos';
+      if (key.includes('emulsi') || key.includes('reactor')) return 'Emulsiones';
+      if (key.includes('resina')) return 'Resinas';
+      return PLANTAS.includes(txt) ? txt : '';
+    }
+
+    function detectarSeparadorCSV(texto) {
+      const primeraLinea = String(texto || '').split(/\r?\n/).find(Boolean) || '';
+      const comas = (primeraLinea.match(/,/g) || []).length;
+      const puntoComas = (primeraLinea.match(/;/g) || []).length;
+      return puntoComas > comas ? ';' : ',';
+    }
+
+    function parseCSV(texto) {
+      const separador = detectarSeparadorCSV(texto);
+      const filas = [];
+      let actual = [];
+      let campo = '';
+      let enComillas = false;
+      for (let i = 0; i < texto.length; i++) {
+        const ch = texto[i];
+        const next = texto[i + 1];
+        if (ch === '"' && enComillas && next === '"') {
+          campo += '"';
+          i++;
+        } else if (ch === '"') {
+          enComillas = !enComillas;
+        } else if (ch === separador && !enComillas) {
+          actual.push(campo.trim());
+          campo = '';
+        } else if ((ch === '\n' || ch === '\r') && !enComillas) {
+          if (ch === '\r' && next === '\n') i++;
+          actual.push(campo.trim());
+          if (actual.some(Boolean)) filas.push(actual);
+          actual = [];
+          campo = '';
+        } else {
+          campo += ch;
+        }
+      }
+      actual.push(campo.trim());
+      if (actual.some(Boolean)) filas.push(actual);
+      return filas;
+    }
+
+    function normalizarHeader(valor) {
+      return String(valor || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+    }
+
+    function csvARealizados(texto) {
+      const filas = parseCSV(texto);
+      if (filas.length < 2) throw new Error('El CSV no contiene filas de datos.');
+      const headers = filas[0].map(normalizarHeader);
+      const idx = (...nombres) => headers.findIndex(h => nombres.includes(h));
+      const idxCodigo = idx('codigo', 'cod');
+      const idxPlanta = idx('planta', 'tipo', 'sector');
+      const idxEquipo = idx('equipo', 'descripcion', 'tanque');
+      const idxMes = idx('mesrealizado', 'mesrealizacion', 'mes', 'realizado');
+      if (idxCodigo < 0 || idxMes < 0) {
+        throw new Error('El CSV debe incluir al menos las columnas codigo y mesRealizado.');
+      }
+
+      return filas.slice(1).map((fila) => {
+        const codigo = String(fila[idxCodigo] || '').trim();
+        const base = PLAN.find(([c]) => c === codigo);
+        const planta = normalizarPlanta(fila[idxPlanta]) || (base ? base[1] : '');
+        const equipo = String(fila[idxEquipo] || '').trim() || (base ? base[2] : '');
+        const mes = normalizarMes(fila[idxMes]);
+        if (!codigo || !mes) return null;
+        return { codigo, planta, equipo, mes, tipo: 'Realizado' };
+      }).filter(Boolean);
+    }
+
+    function persistirDatosActualizados() {
+      localStorage.setItem(STORAGE_DATOS_ACTUALIZADOS, JSON.stringify(realizados));
+    }
+
+    function cargarDatosPersistidos() {
+      try {
+        const raw = localStorage.getItem(STORAGE_DATOS_ACTUALIZADOS);
+        if (!raw) return;
+        const datos = JSON.parse(raw);
+        if (!Array.isArray(datos)) return;
+        realizados = datos.filter(r => r.codigo && r.mes);
+        REALIZADOS = Object.values(realizados.reduce((acc, r) => {
+          if (!acc[r.codigo]) acc[r.codigo] = [r.codigo, r.planta, r.equipo, []];
+          if (!acc[r.codigo][3].includes(r.mes)) acc[r.codigo][3].push(r.mes);
+          return acc;
+        }, {}));
+        recalcularRealizadosMensuales();
+      } catch (err) {
+        console.warn('No se pudieron cargar datos actualizados persistidos.', err);
+      }
+    }
+
+    function mesIdx(mes) {
+      return MESES.indexOf(mes);
+    }
+
+    const plan = expandir(PLAN, 'Planificado');
+    let realizados = expandir(REALIZADOS, 'Realizado');
+    const reprogramados = expandir(REPROGRAMADOS, 'Reprogramado');
+
+    function estadoCumplimiento(pct, objetivo, realizado) {
+      if (objetivo === 0 && realizado > 0) return { texto: 'Adelantado/extra', clase: 'extra' };
+      if (pct >= 100) return { texto: 'Cumplido', clase: 'ok' };
+      if (pct >= 50) return { texto: 'En seguimiento', clase: 'mid' };
+      return { texto: 'Pendiente', clase: 'low' };
+    }
+
+    function obtenerMesSeleccionado() {
+      return $('filtroMes').value;
+    }
+
+    function obtenerPlantaSeleccionada() {
+      return $('filtroPlanta').value;
+    }
+
+    function filtrarPorBase(registros, campoMes = 'mes') {
+      const planta = obtenerPlantaSeleccionada();
+      const mes = obtenerMesSeleccionado();
+      return registros.filter(r => (planta === 'todas' || r.planta === planta) && (mes === 'todos' || r[campoMes] === mes));
+    }
+
+    function objetivoFiltrado() {
+      const mes = obtenerMesSeleccionado();
+      const planta = obtenerPlantaSeleccionada();
+      if (planta !== 'todas') return filtrarPorBase(plan).length;
+      if (mes === 'todos') return OBJETIVO_MENSUAL.reduce((a,b) => a + b, 0);
+      return OBJETIVO_MENSUAL[mesIdx(mes)] || 0;
+    }
+
+    function realizadoFiltrado() {
+      const mes = obtenerMesSeleccionado();
+      const planta = obtenerPlantaSeleccionada();
+      if (planta !== 'todas') return filtrarPorBase(realizados).length;
+      if (mes === 'todos') return REALIZADO_MENSUAL_PLANILLA.reduce((a,b) => a + b, 0);
+      return REALIZADO_MENSUAL_PLANILLA[mesIdx(mes)] || 0;
+    }
+
+    function serieMensualFiltrada() {
+      const planta = obtenerPlantaSeleccionada();
+      if (planta === 'todas') {
+        return {
+          objetivo: OBJETIVO_MENSUAL.slice(),
+          realizado: REALIZADO_MENSUAL_PLANILLA.slice()
+        };
+      }
+      return {
+        objetivo: MESES.map(mes => plan.filter(p => p.planta === planta && p.mes === mes).length),
+        realizado: MESES.map(mes => realizados.filter(r => r.planta === planta && r.mes === mes).length)
+      };
+    }
+
+    function pendientesFiltrados() {
+      const realizadosKeys = new Set(realizados.map(r => `${r.codigo}|${r.mes}`));
+      return filtrarPorBase(plan).filter(p => !realizadosKeys.has(`${p.codigo}|${p.mes}`));
+    }
+
+    function detalleCombinado() {
+      const hechosPorCodigo = new Map();
+      realizados.forEach(r => {
+        if (!hechosPorCodigo.has(r.codigo)) hechosPorCodigo.set(r.codigo, []);
+        hechosPorCodigo.get(r.codigo).push(r);
+      });
+
+      const filasPlan = plan.map(p => {
+        const hechos = hechosPorCodigo.get(p.codigo) || [];
+        const mismoMes = hechos.find(h => h.mes === p.mes);
+        const cercano = mismoMes || hechos.find(h => Math.abs(mesIdx(h.mes) - mesIdx(p.mes)) <= 1);
+        const reprog = reprogramados.some(r => r.codigo === p.codigo && r.mes === p.mes);
+        let estado = 'Pendiente';
+        let mesRealizado = '';
+        let desvio = '';
+        if (cercano) {
+          mesRealizado = cercano.mes;
+          desvio = mesIdx(cercano.mes) - mesIdx(p.mes);
+          estado = desvio === 0 ? 'Cumplido' : 'Adelantado/extra';
+        }
+        if (reprog && estado === 'Pendiente') estado = 'Reprogramado';
+        return { ...p, mesPlan: p.mes, mesRealizado, estado, desvio };
+      });
+
+      const planKeys = new Set(plan.map(p => `${p.codigo}|${p.mes}`));
+      const extras = realizados
+        .filter(r => !planKeys.has(`${r.codigo}|${r.mes}`))
+        .map(r => ({ ...r, mesPlan: '', mesRealizado: r.mes, estado: 'Adelantado/extra', desvio: '' }));
+      return filasPlan.concat(extras);
+    }
+
+    function aplicarFiltrosDetalle(filas) {
+      const planta = obtenerPlantaSeleccionada();
+      const mes = obtenerMesSeleccionado();
+      const estado = $('filtroEstado').value;
+      const buscar = $('buscar').value.trim().toLowerCase();
+      return filas.filter(f => {
+        const matchPlanta = planta === 'todas' || f.planta === planta;
+        const matchMes = mes === 'todos' || f.mesPlan === mes || f.mesRealizado === mes;
+        const matchEstado = estado === 'todos' || f.estado === estado;
+        const texto = `${f.codigo} ${f.equipo} ${f.planta}`.toLowerCase();
+        const matchBuscar = !buscar || texto.includes(buscar);
+        return matchPlanta && matchMes && matchEstado && matchBuscar;
+      });
+    }
+
+    function renderKPIs() {
+      const objetivo = objetivoFiltrado();
+      const realizado = realizadoFiltrado();
+      const pct = objetivo ? Math.round(realizado / objetivo * 100) : (realizado ? 100 : 0);
+      const brecha = realizado - objetivo;
+      const pendientes = pendientesFiltrados().length;
+      const reprog = filtrarPorBase(reprogramados).length;
+      const estado = estadoCumplimiento(pct, objetivo, realizado);
+      const periodoBox = $('lecturaPeriodo');
+      const acumuladoBox = $('lecturaAcumulado');
+      const riesgoBox = $('lecturaRiesgo');
+
+      $('kpiObjetivo').textContent = objetivo;
+      $('kpiRealizado').textContent = realizado;
+      $('kpiCumplimiento').textContent = `${pct}%`;
+      $('kpiBrecha').textContent = brecha > 0 ? `+${brecha}` : brecha;
+      $('kpiPendientes').textContent = pendientes;
+      $('kpiReprogramados').textContent = reprog;
+      $('kpiSemaforo').textContent = estado.texto;
+      $('kpiObjetivoNota').textContent = obtenerMesSeleccionado() === 'todos' ? 'Objetivo anual filtrado' : `Objetivo ${obtenerMesSeleccionado()}`;
+
+      const periodo = obtenerMesSeleccionado() === 'todos' ? 'año completo' : obtenerMesSeleccionado();
+      const planta = obtenerPlantaSeleccionada() === 'todas' ? 'todas las plantas' : obtenerPlantaSeleccionada();
+      periodoBox.className = `callout ${estado.clase === 'ok' || estado.clase === 'extra' ? 'good' : estado.clase === 'mid' ? 'warn' : 'risk'}`;
+      periodoBox.innerHTML = `<strong>Periodo seleccionado</strong>${planta}, ${periodo}: ${realizado} realizados sobre ${objetivo} objetivos (${pct}%). Estado: ${estado.texto}.`;
+
+      const objAcum = OBJETIVO_MENSUAL.slice(0, 6).reduce((a,b) => a + b, 0);
+      const realAcum = REALIZADO_MENSUAL_PLANILLA.slice(0, 6).reduce((a,b) => a + b, 0);
+      const pctAcum = Math.round(realAcum / objAcum * 100);
+      acumuladoBox.className = `callout ${pctAcum >= 100 ? 'good' : pctAcum >= 50 ? 'warn' : 'risk'}`;
+      acumuladoBox.innerHTML = `<strong>Acumulado enero-junio</strong>${realAcum} realizados vs ${objAcum} objetivos. Cumplimiento acumulado: ${pctAcum}%.`;
+
+      const proximos = pendientesFiltrados().slice(0, 3).map(p => `${p.codigo} ${p.equipo}`).join(', ') || 'Sin pendientes en el filtro.';
+      riesgoBox.className = `callout ${pendientes === 0 ? 'good' : pendientes <= 3 ? 'warn' : 'risk'}`;
+      riesgoBox.innerHTML = `<strong>Foco operativo</strong>${pendientes} pendientes. Priorizar: ${proximos}`;
+    }
+
+    function renderChart() {
+      const ctx = $('chartMensual');
+      const serie = serieMensualFiltrada();
+      const cumplimiento = MESES.map((m, i) => serie.objetivo[i] ? Math.round(serie.realizado[i] / serie.objetivo[i] * 100) : (serie.realizado[i] ? 100 : 0));
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        data: {
+          labels: MESES.map(m => m.slice(0,3)),
+          datasets: [
+            { type: 'bar', label: 'Objetivo', data: serie.objetivo, backgroundColor: '#7fb3e8', borderRadius: 5, maxBarThickness: 42 },
+            { type: 'bar', label: 'Realizado', data: serie.realizado, backgroundColor: '#0f9f6e', borderRadius: 5, maxBarThickness: 42 },
+            { type: 'line', label: 'Cumplimiento %', data: cumplimiento, yAxisID: 'pct', borderColor: '#b77900', backgroundColor: '#b77900', tension: 0.25, pointRadius: 4, pointHoverRadius: 6 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 14, boxHeight: 14, usePointStyle: true } },
+            tooltip: { callbacks: { label: context => `${context.dataset.label}: ${context.parsed.y}` } }
+          },
+          scales: {
+            y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#e5edf5' } },
+            pct: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => `${v}%` } }
+          }
+        }
+      });
+    }
+
+    function renderTiraMeses() {
+      const serie = serieMensualFiltrada();
+      const mesActivo = obtenerMesSeleccionado();
+      $('tiraMeses').innerHTML = MESES.map((m, i) => {
+        const objetivo = serie.objetivo[i];
+        const realizado = serie.realizado[i];
+        const pct = objetivo ? Math.round(realizado / objetivo * 100) : 0;
+        const estado = estadoCumplimiento(pct, objetivo, realizado);
+        const color = estado.clase === 'ok' ? 'var(--soft-green)' : estado.clase === 'mid' ? 'var(--soft-amber)' : estado.clase === 'extra' ? 'var(--soft-blue)' : 'var(--soft-red)';
+        const active = mesActivo === m ? ' active' : '';
+        return `<button class="month${active}" style="background:${color}" onclick="seleccionarMes('${m}')" aria-label="Ver ${m}: ${pct}% de cumplimiento">
+          <div class="name">${m.slice(0,3)}</div>
+          <div class="pct">${pct}%</div>
+          <div class="mini">${estado.texto}<br>${realizado} / ${objetivo} | Brecha ${realizado - objetivo}</div>
+        </button>`;
+      }).join('');
+    }
+
+    function renderPlantas() {
+      $('plantas').innerHTML = PLANTAS.map(planta => {
+        const objetivo = plan.filter(p => p.planta === planta).length;
+        const realizado = realizados.filter(r => r.planta === planta).length;
+        const pct = objetivo ? Math.round(realizado / objetivo * 100) : 0;
+        const brecha = realizado - objetivo;
+        const pendientes = Math.max(objetivo - realizado, 0);
+        return `<div class="plant">
+          <strong>${planta}</strong>
+          <div class="metric-row"><span>Realizado</span><strong>${realizado} / ${objetivo}</strong></div>
+          <div class="bar"><span style="width:${Math.min(pct, 130)}%"></span></div>
+          <div class="metric-row"><span>Brecha</span><strong>${brecha > 0 ? '+' : ''}${brecha}</strong></div>
+          <div class="metric-row"><span>Pendientes</span><strong>${pendientes}</strong></div>
+          <div style="margin-top:10px;"><span class="pill ${estadoCumplimiento(pct, objetivo, realizado).clase}">${pct}%</span></div>
+        </div>`;
+      }).join('');
+    }
+
+    function claseEstado(estado) {
+      if (estado === 'Cumplido') return 'ok';
+      if (estado === 'Reprogramado') return 'mid';
+      if (estado === 'Adelantado/extra') return 'extra';
+      return 'low';
+    }
+
+    function renderTablas() {
+      const filas = aplicarFiltrosDetalle(detalleCombinado());
+      $('detalle').innerHTML = filas.map(f => `<tr>
+        <td><strong>${f.codigo}</strong></td>
+        <td>${f.planta}</td>
+        <td>${f.equipo}</td>
+        <td>${f.mesPlan || '-'}</td>
+        <td>${f.mesRealizado || '-'}</td>
+        <td><span class="pill ${claseEstado(f.estado)}">${f.estado}</span></td>
+        <td class="right">${f.desvio === '' ? '-' : f.desvio}</td>
+      </tr>`).join('') || '<tr><td colspan="7" class="center muted">Sin registros con el filtro aplicado</td></tr>';
+
+      const pendientes = pendientesFiltrados();
+      $('pendientes').innerHTML = pendientes.map(p => `<tr>
+        <td><strong>${p.codigo}</strong></td>
+        <td>${p.planta}</td>
+        <td>${p.equipo}</td>
+        <td>${p.mes}</td>
+      </tr>`).join('') || '<tr><td colspan="4" class="center muted">Sin pendientes en el filtro</td></tr>';
+    }
+
+    function actualizarResumenCabecera() {
+      const metaObjetivo = $('meta-objetivo');
+      const metaRealizado = $('meta-realizado');
+      if (metaObjetivo) metaObjetivo.textContent = OBJETIVO_MENSUAL.reduce((a, b) => a + b, 0);
+      if (metaRealizado) metaRealizado.textContent = REALIZADO_MENSUAL_PLANILLA.reduce((a, b) => a + b, 0);
+    }
+
+    function render() {
+      actualizarResumenCabecera();
+      renderKPIs();
+      renderChart();
+      renderTiraMeses();
+      renderPlantas();
+      renderTablas();
+    }
+
+    function seleccionarMes(mes) {
+      $('filtroMes').value = mes;
+      render();
+    }
+
+    function limpiarFiltros() {
+      $('filtroPlanta').value = 'todas';
+      $('filtroMes').value = 'todos';
+      $('filtroEstado').value = 'todos';
+      $('buscar').value = '';
+      render();
+    }
+
+    function exportarCSV() {
+      const filas = aplicarFiltrosDetalle(detalleCombinado());
+      const header = ['Codigo','Planta','Equipo','Mes plan','Mes realizado','Estado','Desvio meses'];
+      const body = filas.map(f => [f.codigo, f.planta, f.equipo, f.mesPlan || '', f.mesRealizado || '', f.estado, f.desvio].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+      const blob = new Blob([[header.join(','), ...body].join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'dashboard_tanques_2026_v2.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function mostrarErrorLogin(mensaje) {
+      const el = $('login-error');
+      el.textContent = mensaje;
+      el.style.display = 'block';
+    }
+
+    function esDominioLectura(email) {
+      return email.endsWith('@grupodisal.com.ar');
+    }
+
+    function iniciarSesion(email, esAdmin = false) {
+      const normalizado = String(email || '').trim().toLowerCase();
+      if (!esAdmin && !esDominioLectura(normalizado)) {
+        mostrarErrorLogin('Acceso permitido solo para cuentas @grupodisal.com.ar o administradores autorizados.');
+        return;
+      }
+
+      currentUser = { email: normalizado, esAdmin };
+      sessionStorage.setItem('disal_tanques_v2_session', JSON.stringify(currentUser));
+      aplicarSesion();
+    }
+
+    function aplicarSesion() {
+      if (!currentUser) return;
+      $('login-screen').style.display = 'none';
+      $('app-shell').classList.add('is-authenticated');
+      $('app-shell').setAttribute('aria-hidden', 'false');
+      document.body.classList.remove('locked');
+      $('session-user').textContent = currentUser.email;
+      $('session-role').textContent = currentUser.esAdmin ? 'Administrador' : 'Solo lectura';
+      $('admin-panel').classList.toggle('is-visible', currentUser.esAdmin);
+      render();
+    }
+
+    function restaurarSesion() {
+      try {
+        const raw = sessionStorage.getItem('disal_tanques_v2_session');
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.email) return false;
+        currentUser = { email: parsed.email, esAdmin: Boolean(parsed.esAdmin) };
+        aplicarSesion();
+        return true;
+      } catch (err) {
+        sessionStorage.removeItem('disal_tanques_v2_session');
+        return false;
+      }
+    }
+
+    async function handleGoogleCredential(response) {
+      try {
+        if (!AUTH_CONFIG.authEndpoint) {
+          throw new Error('Login Google pendiente de configurar: falta authEndpoint.');
+        }
+        const result = await fetch(AUTH_CONFIG.authEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ credential: response.credential })
+        });
+        const session = await result.json();
+        if (!result.ok || !session.email) {
+          throw new Error(session.error || 'No se pudo validar la cuenta de Google.');
+        }
+        iniciarSesion(session.email, session.role === 'admin');
+      } catch (err) {
+        mostrarErrorLogin(err.message || 'No se pudo validar la cuenta de Google.');
+      }
+    }
+
+    function inicializarLoginGoogle() {
+      const container = $('google-login-button');
+      if (!container) return;
+      if (!AUTH_CONFIG.googleClientId || !AUTH_CONFIG.authEndpoint) {
+        container.innerHTML = '<button class="ghost" type="button" disabled>Login Google pendiente de configuracion</button>';
+        return;
+      }
+      const render = () => {
+        if (!window.google?.accounts?.id) {
+          window.setTimeout(render, 120);
+          return;
+        }
+        window.google.accounts.id.initialize({
+          client_id: AUTH_CONFIG.googleClientId,
+          callback: handleGoogleCredential
+        });
+        window.google.accounts.id.renderButton(container, {
+          theme: 'outline',
+          size: 'large',
+          text: 'signin_with',
+          width: 360
+        });
+      };
+      render();
+    }
+
+    function logout() {
+      sessionStorage.removeItem('disal_tanques_v2_session');
+      location.reload();
+    }
+
+    function cargarDatosActualizados() {
+      if (!currentUser || !currentUser.esAdmin) {
+        alert('Solo los administradores pueden cargar datos actualizados.');
+        return;
+      }
+      const input = $('admin-csv');
+      const archivo = input.files && input.files[0];
+      if (!archivo) {
+        $('admin-status').textContent = 'Selecciona un archivo CSV antes de cargar.';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const nuevos = csvARealizados(String(reader.result || ''));
+          if (nuevos.length === 0) throw new Error('No se encontraron verificaciones válidas en el CSV.');
+          realizados = nuevos;
+          REALIZADOS = Object.values(realizados.reduce((acc, r) => {
+            if (!acc[r.codigo]) acc[r.codigo] = [r.codigo, r.planta, r.equipo, []];
+            if (!acc[r.codigo][3].includes(r.mes)) acc[r.codigo][3].push(r.mes);
+            return acc;
+          }, {}));
+          recalcularRealizadosMensuales();
+          persistirDatosActualizados();
+          $('admin-status').textContent = `Carga aplicada: ${nuevos.length} verificaciones realizadas.`;
+          render();
+        } catch (err) {
+          $('admin-status').textContent = err.message || 'No se pudo procesar el CSV.';
+        }
+      };
+      reader.readAsText(archivo, 'utf-8');
+    }
+
+    function init() {
+      cargarDatosPersistidos();
+      $('filtroPlanta').innerHTML = '<option value="todas">Todas las plantas</option>' + PLANTAS.map(p => `<option value="${p}">${p}</option>`).join('');
+      $('filtroMes').innerHTML = '<option value="todos">Año completo</option>' + MESES.map(m => `<option value="${m}">${m}</option>`).join('');
+      ['filtroPlanta','filtroMes','filtroEstado'].forEach(id => $(id).addEventListener('change', render));
+      $('buscar').addEventListener('input', render);
+      $('login-form').addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        iniciarSesion($('login-email').value, false);
+      });
+      inicializarLoginGoogle();
+      if (!restaurarSesion()) {
+        $('login-email').focus();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
