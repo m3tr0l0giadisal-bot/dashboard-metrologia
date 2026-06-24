@@ -10026,11 +10026,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "-",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "20°C a 600°C",
       "Rango de trabajo": "20°C a 600°C",
       "Apreciación": "1",
@@ -10069,7 +10069,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PVM",
@@ -11734,11 +11734,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "-",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "29/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "29/05/2027",
+      "Días para el vencimiento": "340 días",
       "Rango de medición del equipo": "0 a 100 µm",
       "Rango de trabajo": "0 a 100 µm",
       "Apreciación": "100",
@@ -11777,7 +11777,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -13686,11 +13686,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "PORTATIL",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "6/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "6/5/2026",
-      "Días para el vencimiento": "-37 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "-20 °C a 70 °C",
       "Rango de trabajo": ". -20°C a 70 °C",
       "Apreciación": "0,1",
@@ -13729,7 +13729,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PVM",
@@ -13930,11 +13930,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "Infrarrojo",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "6/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "6/5/2026",
-      "Días para el vencimiento": "-37 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "-50 °C a 380 °C",
       "Rango de trabajo": ". -50 °C a 380 °C",
       "Apreciación": "1",
@@ -13973,7 +13973,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -22836,11 +22836,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "2025004- n de cert",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "6/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "28/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "6/5/2026",
-      "Días para el vencimiento": "-37 días",
+      "Vencimiento de la calibración": "28/05/2027",
+      "Días para el vencimiento": "339 días",
       "Rango de medición del equipo": "100 ml",
       "Rango de trabajo": "100 ml",
       "Apreciación": "100",
@@ -22879,7 +22879,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -22898,10 +22898,10 @@ window.METROLOGIA_DATA = {
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
       "Estado de la calibración": "CONFORME",
-      "Fecha de calibración": "28/5/2026",
+      "Fecha de calibración": "18/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "28/5/2027",
-      "Días para el vencimiento": "343 días",
+      "Vencimiento de la calibración": "18/05/2027",
+      "Días para el vencimiento": "329 días",
       "Rango de medición del equipo": "100 ml",
       "Rango de trabajo": "100ml",
       "Apreciación": "100",
@@ -22940,7 +22940,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -29851,11 +29851,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "-",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "0 a 110°C",
       "Rango de trabajo": "0 a 100°C",
       "Apreciación": "1",
@@ -29894,7 +29894,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -29912,11 +29912,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "-",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "0 °C a 60 °C",
       "Rango de trabajo": "0 °C a 60 °C",
       "Apreciación": "1",
@@ -29955,7 +29955,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -30034,11 +30034,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "-",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "6/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "6/5/2026",
-      "Días para el vencimiento": "-37 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "100 ml",
       "Rango de trabajo": "100 ml",
       "Apreciación": "100",
@@ -30077,7 +30077,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -30095,11 +30095,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "Extendedor 4 caras",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "13/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "13/5/2026",
-      "Días para el vencimiento": "-30 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "50/75/100/150 µm",
       "Rango de trabajo": "50/75/100/150 µm",
       "Apreciación": "50/75/100/150 µm",
@@ -30138,7 +30138,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -30523,10 +30523,10 @@ window.METROLOGIA_DATA = {
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
       "Estado de la calibración": "CONFORME",
-      "Fecha de calibración": "29/5/2026",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "29/5/2027",
-      "Días para el vencimiento": "344 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "300 µm",
       "Rango de trabajo": "300 µm",
       "Apreciación": "300",
@@ -30565,7 +30565,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -31071,11 +31071,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "Line Drying Time Recorder",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "0,01\" a 24h",
       "Rango de trabajo": "0,01\" a 24h",
       "Apreciación": "1",
@@ -31114,7 +31114,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -31804,10 +31804,10 @@ window.METROLOGIA_DATA = {
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
       "Estado de la calibración": "CONFORME",
-      "Fecha de calibración": "1/6/2026",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "1/6/2027",
-      "Días para el vencimiento": "354 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "70 a 370 cSt",
       "Rango de trabajo": "71 a 370 cSt",
       "Apreciación": "-",
@@ -31846,7 +31846,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -31865,10 +31865,10 @@ window.METROLOGIA_DATA = {
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
       "Estado de la calibración": "CONFORME",
-      "Fecha de calibración": "1/6/2026",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "1/6/2027",
-      "Días para el vencimiento": "354 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "70 a 370 cSt",
       "Rango de trabajo": "71 a 370 cSt",
       "Apreciación": "-",
@@ -31907,7 +31907,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -32901,11 +32901,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "Equipo para re envasado",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "21/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "16/06/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "21/5/2026",
-      "Días para el vencimiento": "-22 días",
+      "Vencimiento de la calibración": "16/06/2027",
+      "Días para el vencimiento": "358 días",
       "Rango de medición del equipo": "0 a 80 Kg",
       "Rango de trabajo": "1 a 80 Kg",
       "Apreciación": "??",
@@ -32944,7 +32944,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "CBA",
@@ -33145,11 +33145,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "21/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "16/06/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "21/5/2026",
-      "Días para el vencimiento": "-22 días",
+      "Vencimiento de la calibración": "16/06/2027",
+      "Días para el vencimiento": "358 días",
       "Rango de medición del equipo": "0 a 3kg",
       "Rango de trabajo": "100 a 3000g",
       "Apreciación": "??",
@@ -33188,7 +33188,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "CBA",
@@ -34487,11 +34487,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "0 °C a 60 °C",
       "Rango de trabajo": "0 °C a 60 °C",
       "Apreciación": "1",
@@ -34530,7 +34530,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -34670,11 +34670,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "Fuera de servicio por rotura",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "0 °C a 60 °C",
       "Rango de trabajo": "0 °C a 60 °C",
       "Apreciación": "1",
@@ -34713,7 +34713,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -34731,11 +34731,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "27/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "27/05/2027",
+      "Días para el vencimiento": "338 días",
       "Rango de medición del equipo": "0 °C a 60 °C",
       "Rango de trabajo": "0 °C a 60 °C",
       "Apreciación": "1",
@@ -34774,7 +34774,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "BAS",
@@ -34792,11 +34792,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "5/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "28/05/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "5/5/2026",
-      "Días para el vencimiento": "-38 días",
+      "Vencimiento de la calibración": "28/05/2027",
+      "Días para el vencimiento": "339 días",
       "Rango de medición del equipo": "0 °C a 60 °C",
       "Rango de trabajo": "0 °C a 60 °C",
       "Apreciación": "1",
@@ -34835,7 +34835,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PSL",
@@ -35951,11 +35951,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "indica nivel",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "20/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "10/06/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "20/5/2026",
-      "Días para el vencimiento": "-23 días",
+      "Vencimiento de la calibración": "10/06/2027",
+      "Días para el vencimiento": "352 días",
       "Rango de medición del equipo": "0,02mm/m",
       "Rango de trabajo": "0-1 mm/m",
       "Apreciación": "??",
@@ -35994,7 +35994,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PVM",
@@ -37537,11 +37537,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "De Plataforma",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "21/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "16/06/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "21/5/2026",
-      "Días para el vencimiento": "-22 días",
+      "Vencimiento de la calibración": "16/06/2027",
+      "Días para el vencimiento": "358 días",
       "Rango de medición del equipo": "0 a 1500 kg",
       "Rango de trabajo": "0- 1500 kg",
       "Apreciación": "0,5",
@@ -37580,7 +37580,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PSL",
@@ -39610,12 +39610,12 @@ window.METROLOGIA_DATA = {
       "Ubicación / Línea": "Laboratorio de MP",
       "Descripción del equipo": "-",
       "Categ.": "A",
-      "Estado del instrumento": "FUERA DE SERV.",
-      "Estado de la calibración": "-",
-      "Fecha de calibración": "1/6/2026",
+      "Estado del instrumento": "CALIBRADO",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "01/06/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "1/6/2027",
-      "Días para el vencimiento": "354 días",
+      "Vencimiento de la calibración": "01/06/2027",
+      "Días para el vencimiento": "343 días",
       "Rango de medición del equipo": "0 a 14",
       "Rango de trabajo": "0 a 14",
       "Apreciación": "0,1",
@@ -39654,7 +39654,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PVM",
@@ -39673,10 +39673,10 @@ window.METROLOGIA_DATA = {
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
       "Estado de la calibración": "CONFORME",
-      "Fecha de calibración": "16/6/2026",
+      "Fecha de calibración": "14/03/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "16/6/2027",
-      "Días para el vencimiento": "362 días",
+      "Vencimiento de la calibración": "14/03/2027",
+      "Días para el vencimiento": "264 días",
       "Rango de medición del equipo": "0 a 18000 Kg",
       "Rango de trabajo": "0 a 18000 Kg",
       "Apreciación": "5",
@@ -39715,7 +39715,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PVM",
@@ -42722,11 +42722,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "-",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "VENCIDO",
-      "Fecha de calibración": "27/5/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "17/06/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "27/5/2026",
-      "Días para el vencimiento": "-16 días",
+      "Vencimiento de la calibración": "17/06/2027",
+      "Días para el vencimiento": "359 días",
       "Rango de medición del equipo": "0 a 60000 kg",
       "Rango de trabajo": "0 a 42000 kg",
       "Apreciación": "20",
@@ -42765,7 +42765,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PVM",
@@ -44247,11 +44247,11 @@ window.METROLOGIA_DATA = {
       "Descripción del equipo": "clase 0,5%-0 a 100 bar",
       "Categ.": "A",
       "Estado del instrumento": "CALIBRADO",
-      "Estado de la calibración": "POR VENCER",
-      "Fecha de calibración": "17/6/2025",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "17/06/2025",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "17/6/2026",
-      "Días para el vencimiento": "5 días",
+      "Vencimiento de la calibración": "17/06/2027",
+      "Días para el vencimiento": "359 días",
       "Rango de medición del equipo": "0 - 1500 psi",
       "Rango de trabajo": "1 - 1500 psi",
       "Apreciación": "1",
@@ -44290,7 +44290,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "PSL",
@@ -46869,12 +46869,12 @@ window.METROLOGIA_DATA = {
       "Ubicación / Línea": "Depósito",
       "Descripción del equipo": "-",
       "Categ.": "A",
-      "Estado del instrumento": "NO CALIBRADO",
-      "Estado de la calibración": "-",
-      "Fecha de calibración": "1/6/2026",
+      "Estado del instrumento": "CALIBRADO",
+      "Estado de la calibración": "CONFORME",
+      "Fecha de calibración": "16/06/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "1/6/2027",
-      "Días para el vencimiento": "354 días",
+      "Vencimiento de la calibración": "16/06/2027",
+      "Días para el vencimiento": "358 días",
       "Rango de medición del equipo": "0,01 kg a 30 kg",
       "Rango de trabajo": "0,01 kg a 30 kg",
       "Apreciación": "0,005",
@@ -46913,7 +46913,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     },
     {
       "Sede": "ROS",
@@ -46930,12 +46930,12 @@ window.METROLOGIA_DATA = {
       "Ubicación / Línea": "Depósito",
       "Descripción del equipo": "",
       "Categ.": "A",
-      "Estado del instrumento": "NO CALIBRADO",
+      "Estado del instrumento": "CALIBRADO",
       "Estado de la calibración": "CONFORME",
-      "Fecha de calibración": "16/6/2026",
+      "Fecha de calibración": "16/06/2026",
       "Frecuencia de calibración": "12 meses",
-      "Vencimiento de la calibración": "16/6/2027",
-      "Días para el vencimiento": "362 días",
+      "Vencimiento de la calibración": "16/06/2027",
+      "Días para el vencimiento": "358 días",
       "Rango de medición del equipo": "0 30kg",
       "Rango de trabajo": "1 a 30 kg",
       "Apreciación": "0,005",
@@ -46951,7 +46951,7 @@ window.METROLOGIA_DATA = {
       "Fotos": "",
       "En altura?": "",
       "Prov. de calibración asignado": "SERCOME",
-      "Último prov. de calibración": "SERCOME",
+      "Último prov. de calibración": "SAHILICES",
       "Lugar de calibración": "EN EL SITIO",
       "Gestión": "",
       "CeCO-Centro de Costo": "1030310",
@@ -46974,7 +46974,7 @@ window.METROLOGIA_DATA = {
       "Comparación de Frecuencia de calibración": "12 meses",
       "Columna_60": "",
       "Columna_61": "",
-      "Fecha de corte estado calibración": "12/6/2026"
+      "Fecha de corte estado calibración": "23/6/2026"
     }
   ],
   "fecha_corte_estado_calibracion": "19/6/2026"
