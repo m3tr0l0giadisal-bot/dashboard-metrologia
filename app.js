@@ -31,6 +31,37 @@ const fields = {
   riesgo: "RIESGO"
 };
 
+const fieldAliases = {
+  "Código": ["Codigo", "C�digo"],
+  "Código viejo": ["Codigo viejo", "C�digo viejo"],
+  "Ubicación / Línea": ["Ubicacion / Linea", "Ubicaci�n / L�nea"],
+  "Estado de la calibración": ["Estado de la calibracion", "Estado de la calibraci�n"],
+  "Fecha de calibración": ["Fecha de calibracion", "Fecha de calibraci�n"],
+  "Frecuencia de calibración": ["Frecuencia de calibracion", "Frecuencia de calibraci�n"],
+  "Vencimiento de la calibración": ["Vencimiento de la calibracion", "Vencimiento de la calibraci�n"],
+  "Días para el vencimiento": ["Dias para el vencimiento", "D�as para el vencimiento"],
+  "N° de serie": ["N de serie", "N� de serie"],
+  "Identificación": ["Identificacion", "Identificaci�n"],
+  "Prov. de calibración asignado": ["Prov. de calibracion asignado", "Prov. de calibraci�n asignado"],
+  "Último prov. de calibración": ["Ultimo prov. de calibracion", "�ltimo prov. de calibraci�n"]
+};
+
+const fieldTokens = {
+  "Código": ["digo"],
+  "Código viejo": ["digo", "viejo"],
+  "Ubicación / Línea": ["ubicaci", "l", "nea"],
+  "Estado del instrumento": ["estado", "instrumento"],
+  "Estado de la calibración": ["estado", "calibraci"],
+  "Fecha de calibración": ["fecha", "calibraci"],
+  "Frecuencia de calibración": ["frecuencia", "calibraci"],
+  "Vencimiento de la calibración": ["vencimiento", "calibraci"],
+  "Días para el vencimiento": ["as", "vencimiento"],
+  "N° de serie": ["serie"],
+  "Identificación": ["identificaci"],
+  "Prov. de calibración asignado": ["prov", "calibraci", "asignado"],
+  "Último prov. de calibración": ["ltimo", "prov", "calibraci"]
+};
+
 const colors = {
   CONFORME: "#16805d",
   "POR VENCER": "#c97916",
@@ -117,8 +148,49 @@ let pendingEquipmentAdds = [];
 let rows = buildRowsWithEquipmentAdds();
 
 function value(row, key) {
-  const val = row[key];
+  const val = rawValue(row, key);
   return val && String(val).trim() ? String(val).trim() : "Sin dato";
+}
+
+function rawValue(row, key) {
+  const keys = [key, ...(fieldAliases[key] || [])];
+  for (const candidate of keys) {
+    if (Object.prototype.hasOwnProperty.call(row, candidate)) {
+      const val = row[candidate];
+      if (val !== null && val !== undefined && String(val).trim()) {
+        return val;
+      }
+    }
+  }
+  const resolved = resolveFieldKey(row, key);
+  if (resolved) {
+    const val = row[resolved];
+    if (val !== null && val !== undefined && String(val).trim()) {
+      return val;
+    }
+  }
+  return "";
+}
+
+function resolveFieldKey(row, key) {
+  const tokens = fieldTokens[key];
+  if (!tokens) return "";
+  const matches = Object.keys(row).filter((candidate) => {
+    const normalized = normalizeFieldLabel(candidate);
+    return tokens.every((token) => normalized.includes(token));
+  });
+  if (!matches.length) return "";
+  matches.sort((a, b) => normalizeFieldLabel(a).length - normalizeFieldLabel(b).length);
+  return matches[0];
+}
+
+function normalizeFieldLabel(label) {
+  return String(label || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/�/g, "")
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .toLowerCase();
 }
 
 function parseDays(text) {
@@ -128,7 +200,7 @@ function parseDays(text) {
 
 function buildRows() {
   return rawRows.map((row) => {
-    const code = normalizeCode(row[fields.codigoReal]);
+    const code = normalizeCode(rawValue(row, fields.codigoReal));
     return prepareRow({
       ...row,
       ...(localUpdates[code] || {})
@@ -139,11 +211,11 @@ function buildRows() {
 function buildRowsWithEquipmentAdds() {
   const baseRows = buildRows();
   if (isReadOnlyMode()) return baseRows;
-  const baseCodes = new Set(baseRows.map((row) => normalizeCode(row[fields.codigoReal])));
+  const baseCodes = new Set(baseRows.map((row) => normalizeCode(rawValue(row, fields.codigoReal))));
   const addedRows = localEquipmentAdds
-    .filter((row) => !baseCodes.has(normalizeCode(row[fields.codigoReal])))
+    .filter((row) => !baseCodes.has(normalizeCode(rawValue(row, fields.codigoReal))))
     .map((row) => {
-      const code = normalizeCode(row[fields.codigoReal]);
+      const code = normalizeCode(rawValue(row, fields.codigoReal));
       return prepareRow({
         ...row,
         ...(localUpdates[code] || {})
@@ -153,29 +225,30 @@ function buildRowsWithEquipmentAdds() {
 }
 
 function prepareRow(row) {
-  const dueDays = daysUntil(row[fields.vencimiento]);
-  const recalculatedStatus = calibrationStatusFromDueDate(row[fields.vencimiento]);
+  const sourceDueDate = rawValue(row, fields.vencimiento);
+  const dueDays = daysUntil(sourceDueDate);
+  const recalculatedStatus = calibrationStatusFromDueDate(sourceDueDate);
   const isOutOfService = value(row, fields.estadoInstrumento).toUpperCase() === "FUERA DE SERV.";
   const prepared = {
     ...row,
-    [fields.vencimiento]: isOutOfService ? "-" : row[fields.vencimiento],
-    [fields.dias]: isOutOfService ? "-" : dueDays === null ? row[fields.dias] : daysLabel(dueDays),
-    [fields.estadoCalibracion]: isOutOfService ? "NO APLICA" : recalculatedStatus || row[fields.estadoCalibracion]
+    [fields.vencimiento]: isOutOfService ? "-" : sourceDueDate,
+    [fields.dias]: isOutOfService ? "-" : dueDays === null ? rawValue(row, fields.dias) : daysLabel(dueDays),
+    [fields.estadoCalibracion]: isOutOfService ? "NO APLICA" : recalculatedStatus || rawValue(row, fields.estadoCalibracion)
   };
   return {
     ...prepared,
-    _diasNum: isOutOfService ? null : dueDays === null ? parseDays(prepared[fields.dias]) : dueDays,
+    _diasNum: isOutOfService ? null : dueDays === null ? parseDays(rawValue(prepared, fields.dias)) : dueDays,
     _search: [
-      prepared[fields.codigoReal],
-      prepared["Código viejo"],
-      prepared[fields.sede],
-      prepared[fields.tipo],
-      prepared[fields.planta],
-      prepared[fields.linea],
-      prepared[fields.responsable],
-      prepared[fields.marca],
-      prepared[fields.serie],
-      prepared[fields.estadoCalibracion]
+      rawValue(prepared, fields.codigoReal),
+      rawValue(prepared, "Código viejo"),
+      rawValue(prepared, fields.sede),
+      rawValue(prepared, fields.tipo),
+      rawValue(prepared, fields.planta),
+      rawValue(prepared, fields.linea),
+      rawValue(prepared, fields.responsable),
+      rawValue(prepared, fields.marca),
+      rawValue(prepared, fields.serie),
+      rawValue(prepared, fields.estadoCalibracion)
     ].join(" ").toLowerCase()
   };
 }
@@ -559,7 +632,7 @@ function exportCsv() {
     fields.categoria,
     fields.riesgo
   ];
-  const csv = [headers, ...data.map((row) => headers.map((header) => row[header] || ""))]
+  const csv = [headers, ...data.map((row) => headers.map((header) => rawValue(row, header) || ""))]
     .map((line) => line.map(csvCell).join(";"))
     .join("\n");
   const blob = new Blob([`\ufeff${csv}`], { type: "text/csv;charset=utf-8" });
@@ -590,13 +663,13 @@ function setAdminStatus(message) {
 
 function findRowByCode(code) {
   const normalized = normalizeCode(code);
-  return rows.find((row) => normalizeCode(row[fields.codigoReal]) === normalized);
+  return rows.find((row) => normalizeCode(rawValue(row, fields.codigoReal)) === normalized);
 }
 
 function populateAdminCodeList() {
   const options = rows
     .map((row) => ({
-      code: normalizeCode(row[fields.codigoReal]),
+      code: normalizeCode(rawValue(row, fields.codigoReal)),
       tipo: value(row, fields.tipo),
       planta: value(row, fields.planta),
       linea: value(row, fields.linea)
@@ -622,7 +695,7 @@ function saveSingleUpdate() {
     setAdminStatus("Ingresar al menos una fecha o estado para actualizar.");
     return;
   }
-  applyDateUpdate(code, calDate || row[fields.fechaCalibracion], dueDate || row[fields.vencimiento], calibrationStatus, instrumentStatus);
+  applyDateUpdate(code, calDate || rawValue(row, fields.fechaCalibracion), dueDate || rawValue(row, fields.vencimiento), calibrationStatus, instrumentStatus);
   setAdminStatus(`Equipo ${code} actualizado.`);
 }
 
@@ -662,8 +735,8 @@ async function applyBulkUpdate() {
       const existing = findRowByCode(mapped.code);
       applyDateUpdate(
         mapped.code,
-        mapped.calDate || existing[fields.fechaCalibracion],
-        mapped.dueDate || existing[fields.vencimiento],
+        mapped.calDate || rawValue(existing, fields.fechaCalibracion),
+        mapped.dueDate || rawValue(existing, fields.vencimiento),
         mapped.calibrationStatus
       );
       applied++;
@@ -835,10 +908,10 @@ async function detectMissingEquipment() {
   }
   try {
     const records = await readEquipmentMasterFile(file);
-    const currentCodes = new Set(rows.map((row) => normalizeCode(row[fields.codigoReal])).filter(Boolean));
+    const currentCodes = new Set(rows.map((row) => normalizeCode(rawValue(row, fields.codigoReal))).filter(Boolean));
     pendingEquipmentAdds = records
       .map(mapEquipmentRecord)
-      .filter((row) => row && !currentCodes.has(normalizeCode(row[fields.codigoReal])));
+      .filter((row) => row && !currentCodes.has(normalizeCode(rawValue(row, fields.codigoReal))));
     renderMissingEquipmentList(pendingEquipmentAdds);
     setAdminEquipmentStatus(`${pendingEquipmentAdds.length} equipos detectados para agregar.`);
   } catch (error) {
@@ -985,7 +1058,7 @@ function renderMissingEquipmentList(data) {
     return;
   }
   els.adminEquipment.table.innerHTML = data.map((row) => {
-    const code = normalizeCode(row[fields.codigoReal]);
+    const code = normalizeCode(rawValue(row, fields.codigoReal));
     return `
       <tr>
         <td><input class="equipment-check" type="checkbox" value="${escapeHtml(code)}" checked aria-label="Seleccionar ${escapeHtml(code)}"></td>
@@ -1010,11 +1083,11 @@ function addSelectedEquipment() {
     return;
   }
   const existing = new Set([
-    ...rawRows.map((row) => normalizeCode(row[fields.codigoReal])),
-    ...localEquipmentAdds.map((row) => normalizeCode(row[fields.codigoReal]))
+    ...rawRows.map((row) => normalizeCode(rawValue(row, fields.codigoReal))),
+    ...localEquipmentAdds.map((row) => normalizeCode(rawValue(row, fields.codigoReal)))
   ]);
   const toAdd = pendingEquipmentAdds.filter((row) => {
-    const code = normalizeCode(row[fields.codigoReal]);
+    const code = normalizeCode(rawValue(row, fields.codigoReal));
     return selected.has(code) && !existing.has(code);
   });
   localEquipmentAdds = [...localEquipmentAdds, ...toAdd];
@@ -1022,7 +1095,7 @@ function addSelectedEquipment() {
   rows = buildRowsWithEquipmentAdds();
   updateDashboard();
   populateAdminCodeList();
-  pendingEquipmentAdds = pendingEquipmentAdds.filter((row) => !selected.has(normalizeCode(row[fields.codigoReal])));
+  pendingEquipmentAdds = pendingEquipmentAdds.filter((row) => !selected.has(normalizeCode(rawValue(row, fields.codigoReal))));
   renderMissingEquipmentList(pendingEquipmentAdds);
   setAdminEquipmentStatus(`${toAdd.length} equipos agregados localmente. Descargar el maestro actualizado para persistirlos.`);
 }
@@ -1269,12 +1342,12 @@ function attachAdminListeners() {
     els.admin.instrumentStatus.value = ["CALIBRADO", "FUERA DE SERV.", "-"].includes(value(row, fields.estadoInstrumento).toUpperCase())
       ? value(row, fields.estadoInstrumento).toUpperCase()
       : "";
-    els.admin.calDate.value = dmyToInputDate(row[fields.fechaCalibracion]);
-    els.admin.dueDate.value = dmyToInputDate(row[fields.vencimiento]);
+    els.admin.calDate.value = dmyToInputDate(rawValue(row, fields.fechaCalibracion));
+    els.admin.dueDate.value = dmyToInputDate(rawValue(row, fields.vencimiento));
     els.admin.calibrationStatus.value = ["CONFORME", "POR VENCER", "VENCIDO", "NO APLICA", "-"].includes(value(row, fields.estadoCalibracion).toUpperCase())
       ? value(row, fields.estadoCalibracion).toUpperCase()
       : "";
-    setAdminStatus(`${normalizeCode(row[fields.codigoReal])} seleccionado: ${value(row, fields.tipo)} - ${value(row, fields.planta)} - ${value(row, fields.linea)}.`);
+    setAdminStatus(`${normalizeCode(rawValue(row, fields.codigoReal))} seleccionado: ${value(row, fields.tipo)} - ${value(row, fields.planta)} - ${value(row, fields.linea)}.`);
   });
 }
 
