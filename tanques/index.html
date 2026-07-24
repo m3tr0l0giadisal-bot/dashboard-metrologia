@@ -820,7 +820,6 @@
     let REALIZADO_MENSUAL_PLANILLA = [2, 13, 6, 8, 4, 8, 6, 0, 0, 0, 0, 0];
     const PLANTAS = ['Latex Blanco','Latex Color','Revoques Text.','Sinteticos','Emulsiones','Resinas'];
     const ADMIN_EMAILS = new Set(['m3tr0l0giadisal@gmail.com', 'drivero@grupodisal.com.ar']);
-    const STORAGE_DATOS_ACTUALIZADOS = 'disal_tanques_v2_datos_actualizados';
     const STORAGE_BASE_VERSION = 'disal_tanques_v2_base_version';
     const BASE_VERSION = '20260724-julio';
     let currentUser = null;
@@ -997,30 +996,14 @@
 
     function persistirDatosActualizados() {
       localStorage.setItem(STORAGE_BASE_VERSION, BASE_VERSION);
-      localStorage.setItem(STORAGE_DATOS_ACTUALIZADOS, JSON.stringify(realizados));
     }
 
     function cargarDatosPersistidos() {
       try {
-        const storedVersion = localStorage.getItem(STORAGE_BASE_VERSION);
-        if (storedVersion !== BASE_VERSION) {
-          localStorage.removeItem(STORAGE_DATOS_ACTUALIZADOS);
-          localStorage.setItem(STORAGE_BASE_VERSION, BASE_VERSION);
-          return;
-        }
-        const raw = localStorage.getItem(STORAGE_DATOS_ACTUALIZADOS);
-        if (!raw) return;
-        const datos = JSON.parse(raw);
-        if (!Array.isArray(datos)) return;
-        realizados = datos.filter(r => r.codigo && r.mes);
-        REALIZADOS = Object.values(realizados.reduce((acc, r) => {
-          if (!acc[r.codigo]) acc[r.codigo] = [r.codigo, r.planta, r.equipo, []];
-          if (!acc[r.codigo][3].includes(r.mes)) acc[r.codigo][3].push(r.mes);
-          return acc;
-        }, {}));
-        recalcularRealizadosMensuales();
+        localStorage.removeItem('disal_tanques_v2_datos_actualizados');
+        localStorage.setItem(STORAGE_BASE_VERSION, BASE_VERSION);
       } catch (err) {
-        console.warn('No se pudieron cargar datos actualizados persistidos.', err);
+        console.warn('No se pudo limpiar la cache local de tanques.', err);
       }
     }
 
@@ -1384,7 +1367,7 @@
           }, {}));
           recalcularRealizadosMensuales();
           persistirDatosActualizados();
-          $('admin-status').textContent = `Carga aplicada: ${nuevos.length} verificaciones realizadas.`;
+          $('admin-status').textContent = `Carga aplicada en esta sesion: ${nuevos.length} verificaciones realizadas. Al recargar vuelve la base publicada.`;
           render();
         } catch (err) {
           $('admin-status').textContent = err.message || 'No se pudo procesar el CSV.';
