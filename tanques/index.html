@@ -821,6 +821,8 @@
     const PLANTAS = ['Latex Blanco','Latex Color','Revoques Text.','Sinteticos','Emulsiones','Resinas'];
     const ADMIN_EMAILS = new Set(['m3tr0l0giadisal@gmail.com', 'drivero@grupodisal.com.ar']);
     const STORAGE_DATOS_ACTUALIZADOS = 'disal_tanques_v2_datos_actualizados';
+    const STORAGE_BASE_VERSION = 'disal_tanques_v2_base_version';
+    const BASE_VERSION = '20260724-julio';
     let currentUser = null;
 
     const PLAN = [
@@ -994,11 +996,18 @@
     }
 
     function persistirDatosActualizados() {
+      localStorage.setItem(STORAGE_BASE_VERSION, BASE_VERSION);
       localStorage.setItem(STORAGE_DATOS_ACTUALIZADOS, JSON.stringify(realizados));
     }
 
     function cargarDatosPersistidos() {
       try {
+        const storedVersion = localStorage.getItem(STORAGE_BASE_VERSION);
+        if (storedVersion !== BASE_VERSION) {
+          localStorage.removeItem(STORAGE_DATOS_ACTUALIZADOS);
+          localStorage.setItem(STORAGE_BASE_VERSION, BASE_VERSION);
+          return;
+        }
         const raw = localStorage.getItem(STORAGE_DATOS_ACTUALIZADOS);
         if (!raw) return;
         const datos = JSON.parse(raw);
