@@ -204,6 +204,122 @@
         text-transform: uppercase;
       }
 
+      .purpose-section {
+        margin-top: 28px;
+        padding: 28px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: 0 12px 30px rgba(16, 34, 53, 0.08);
+      }
+
+      .purpose-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .purpose-heading h2 {
+        margin: 0;
+        font-size: 28px;
+      }
+
+      .trinorma-tag {
+        display: inline-flex;
+        min-height: 30px;
+        align-items: center;
+        padding: 5px 11px;
+        border-radius: 999px;
+        background: #e8f3ef;
+        color: #08705b;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .purpose-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .purpose-card {
+        padding: 20px;
+        background: #f7fafc;
+        border: 1px solid var(--line);
+        border-left: 5px solid var(--blue);
+        border-radius: 7px;
+      }
+
+      .purpose-card.vision {
+        border-left-color: var(--green);
+      }
+
+      .purpose-card h3 {
+        margin: 0 0 9px;
+        color: var(--blue);
+        font-size: 19px;
+      }
+
+      .purpose-card.vision h3 {
+        color: var(--green);
+      }
+
+      .purpose-card p {
+        margin: 0;
+        color: var(--ink);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .values-title {
+        margin: 24px 0 12px;
+        font-size: 18px;
+      }
+
+      .values-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .value-item {
+        padding: 14px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-top: 4px solid var(--blue);
+        border-radius: 6px;
+      }
+
+      .value-item:nth-child(2),
+      .value-item:nth-child(5) {
+        border-top-color: var(--green);
+      }
+
+      .value-item:nth-child(3) {
+        border-top-color: #b57212;
+      }
+
+      .value-item strong {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+
+      .value-item span {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .framework-note {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
       @media (max-width: 780px) {
         .brandbar {
           align-items: flex-start;
@@ -221,8 +337,14 @@
         }
 
         .grid,
+        .purpose-grid,
+        .values-grid,
         .status {
           grid-template-columns: 1fr;
+        }
+
+        .purpose-heading {
+          flex-direction: column;
         }
       }
     </style>
@@ -315,7 +437,41 @@
           <div class="actions"><a class="button primary" href="kpi/">Abrir KPI</a></div>
         </article>
       </section>
+
+      <section class="purpose-section" aria-labelledby="purposeTitle">
+        <div class="purpose-heading">
+          <div>
+            <p class="section-label">Identidad y dirección</p>
+            <h2 id="purposeTitle">Gestión Metrológica integral</h2>
+          </div>
+          <span class="trinorma-tag">ISO 9001 · ISO 14001 · ISO 45001</span>
+        </div>
+
+        <div class="purpose-grid">
+          <article class="purpose-card">
+            <h3>Misión</h3>
+            <p>Asegurar la confiabilidad, trazabilidad y calidad de las mediciones realizadas por los equipos de la compañía para respaldar la calidad de las materias primas, los procesos y los productos, el control de los aspectos ambientales y la protección de la seguridad y salud de las personas.</p>
+          </article>
+          <article class="purpose-card vision">
+            <h3>Visión</h3>
+            <p>Ser el sistema nervioso de control de planta mediante una Gestión Metrológica integrada, digital y basada en riesgos, capaz de conectar equipos, sensores y datos confiables para anticipar desvíos, mejorar procesos, prevenir impactos ambientales y contribuir a condiciones de trabajo seguras y saludables.</p>
+          </article>
+        </div>
+
+        <h3 class="values-title">Valores que orientan la gestión</h3>
+        <div class="values-grid">
+          <div class="value-item"><strong>Confiabilidad del dato</strong><span>Mediciones válidas, trazables e íntegras para decidir con evidencia.</span></div>
+          <div class="value-item"><strong>Prevención ambiental</strong><span>Información confiable para controlar aspectos, consumos, emisiones y residuos.</span></div>
+          <div class="value-item"><strong>Seguridad y salud</strong><span>La protección de las personas prevalece al medir, intervenir y validar controles.</span></div>
+          <div class="value-item"><strong>Gestión basada en riesgos</strong><span>Priorizar recursos según impacto en calidad, ambiente, SST y continuidad operativa.</span></div>
+          <div class="value-item"><strong>Mejora y participación</strong><span>Aprender de tendencias, incidentes y aportes de quienes operan los procesos.</span></div>
+        </div>
+        <p class="framework-note">Marco integral de referencia: calidad, gestión ambiental y seguridad y salud en el trabajo. La calibración o verificación respalda el control, pero no sustituye la evaluación del riesgo ni la determinación del cumplimiento.</p>
+      </section>
     </main>
   </body>
 </html>
+
+
+
 
