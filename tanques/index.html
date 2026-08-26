@@ -817,11 +817,11 @@
   <script>
     const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
     const OBJETIVO_MENSUAL = [4,6,6,6,5,5,5,5,5,2,6,3];
-    let REALIZADO_MENSUAL_PLANILLA = [2, 13, 6, 8, 4, 8, 6, 0, 0, 0, 0, 0];
+    let REALIZADO_MENSUAL_PLANILLA = [2, 13, 6, 8, 4, 8, 9, 7, 0, 0, 0, 0];
     const PLANTAS = ['Latex Blanco','Latex Color','Revoques Text.','Sinteticos','Emulsiones','Resinas'];
     const ADMIN_EMAILS = new Set(['m3tr0l0giadisal@gmail.com', 'drivero@grupodisal.com.ar']);
     const STORAGE_BASE_VERSION = 'disal_tanques_v2_base_version';
-    const BASE_VERSION = '20260724-julio';
+    const BASE_VERSION = '20260825-agosto';
     let currentUser = null;
 
     const PLAN = [
@@ -867,36 +867,40 @@
     ];
 
     let REALIZADOS = [
-      ["00582","Ltex Blanco","TK3 LatBco",["Febrero", "Marzo", "Abril"]],
-      ["00592","Ltex Blanco","TK1 LatBco",["Marzo", "Abril", "Junio"]],
-      ["00593","Ltex Blanco","TK2 LatBco",["Febrero"]],
-      ["00626","Ltex Blanco","TK5 LatBco",["Febrero", "Junio"]],
-      ["00627","Ltex Blanco","TK6 LatBco",["Febrero", "Abril", "Julio"]],
-      ["00700","Ltex Blanco","TK4 LatBco",["Febrero", "Abril", "Mayo"]],
-      ["00644","Ltex Color","TK N3 Latex Color",["Febrero", "Abril", "Junio"]],
+      ["00582","Latex Blanco","TK3 LatBco",["Febrero", "Marzo", "Abril"]],
+      ["00592","Latex Blanco","TK1 LatBco",["Marzo", "Abril", "Junio"]],
+      ["00593","Latex Blanco","TK2 LatBco",["Febrero"]],
+      ["00626","Latex Blanco","TK5 LatBco",["Febrero", "Junio"]],
+      ["00627","Latex Blanco","TK6 LatBco",["Febrero", "Abril", "Julio"]],
+      ["00700","Latex Blanco","TK4 LatBco",["Febrero", "Abril", "Mayo"]],
+      ["00644","Latex Color","TK N3 Látex Color",["Febrero", "Abril", "Junio"]],
       ["00663","Revoques Text.","TK3-TER",["Febrero"]],
       ["00664","Revoques Text.","TK4-TER",["Febrero"]],
-      ["00665","Revoques Text.","TK5-TER",["Febrero", "Julio"]],
+      ["00665","Revoques Text.","TK5-TER",["Febrero", "Julio", "Agosto"]],
       ["00666","Revoques Text.","TK6-TER",["Febrero", "Junio", "Julio"]],
       ["00640","Sinteticos","TK N6 Sint",["Marzo"]],
-      ["00643","Sinteticos","TK N3 Sint",["Abril"]],
-      ["00649","Sinteticos","TKN1 Sint",["Mayo"]],
-      ["00650","Sinteticos","TKN2 Sint",["Febrero"]],
-      ["00651","Sinteticos","TKN4 Sint",["Abril"]],
-      ["00652","Sinteticos","TKN5 Sint",["Marzo"]],
+      ["00643","Sinteticos","TK N3 Sint",["Abril", "Agosto"]],
+      ["00649","Sinteticos","TKN1 Sint",["Mayo", "Agosto"]],
+      ["00650","Sinteticos","TKN2 Sint",["Febrero", "Agosto"]],
+      ["00651","Sinteticos","TKN4 Sint",["Abril", "Agosto"]],
+      ["00652","Sinteticos","TKN5 Sint",["Marzo", "Agosto"]],
       ["00653","Sinteticos","TKN7 Sint",["Enero"]],
+      ["00654","Sinteticos","TKN8 Sint",["Agosto"]],
       ["00655","Sinteticos","TKN9 Sint",["Marzo"]],
       ["00657","Sinteticos","TKN10 Sint",["Abril", "Junio"]],
       ["00658","Sinteticos","TKN11 Sint",["Enero", "Julio"]],
       ["00659","Sinteticos","TKN12 Sint",["Marzo"]],
       ["00660","Sinteticos","TKN13 Sint",["Febrero"]],
+      ["00141","Emulsiones","Reactor 2",["Julio"]],
+      ["00143","Emulsiones","Coloide",["Julio"]],
+      ["00145","Emulsiones","TK2-201",["Julio"]],
       ["00146","Emulsiones","TK2-101",["Mayo"]],
       ["00142","Emulsiones","Reactor 1",["Mayo"]],
       ["00602","Resinas","Reactor 2 Resinas",["Febrero", "Junio"]],
-      ["00760","Ltex Blanco","TK1 LatBco(40k)",["Junio"]],
-      ["00761","Ltex Blanco","TK2 LatBco(40k)",["Julio"]],
-      ["00762","Ltex Blanco","TK3 LatBco(30k)",["Junio"]],
-      ["00763","Ltex Blanco","TK4 LatBco(30k)",["Julio"]]
+      ["00760","Latex Blanco","TK1 LatBco(40k)",["Junio"]],
+      ["00761","Latex Blanco","TK2 LatBco(40k)",["Julio"]],
+      ["00762","Latex Blanco","TK3 LatBco(30k)",["Junio"]],
+      ["00763","Latex Blanco","TK4 LatBco(30k)",["Julio"]]
     ];
 
     const $ = id => document.getElementById(id);

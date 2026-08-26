@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KPI consolidados | Calidad y Metrología DISAL</title>
+  <style>
+    :root{--blue:#1f4696;--blue2:#2f6fb0;--green:#087f67;--amber:#b96b08;--red:#b83b3b;--ink:#14273a;--muted:#5d6c79;--line:#d9e2ec;--bg:#eef3f8;--panel:#fff;--soft:#f6f9fc;--focus:#f2a51a}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Arial,sans-serif;line-height:1.5}
+    a,button,select{font:inherit}
+    a:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    .brandbar{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 28px;background:var(--blue);color:#fff;border-bottom:4px solid #15366f}
+    .brand{display:flex;align-items:center;gap:16px;font-weight:800}.logo{display:grid;line-height:.88;padding-right:16px;border-right:1px solid #ffffff66}.logo small{font-size:9px}.logo strong{font-size:25px}.brand-name{font-size:19px}
+    .brand-actions{display:flex;gap:10px;flex-wrap:wrap}.brand-actions a{min-height:44px;display:inline-flex;align-items:center;padding:8px 14px;border:1px solid #ffffff8a;border-radius:6px;color:#fff;text-decoration:none;font-weight:700}
+    .shell{width:min(1320px,calc(100% - 40px));margin:auto;padding:34px 0 48px}
+    .hero{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:22px}.eyebrow{margin:0 0 8px;color:var(--green);font-size:12px;font-weight:900;text-transform:uppercase}.hero h1{margin:0;font-size:clamp(30px,4vw,46px);line-height:1.05}.hero p{max-width:800px;margin:12px 0 0;color:var(--muted);font-size:16px}.source{max-width:320px;color:var(--muted);font-size:13px;text-align:right}.source strong{display:block;color:var(--ink)}
+    .notice{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;padding:14px 16px;background:#fff8e8;border:1px solid #efd397;border-left:5px solid var(--amber);border-radius:8px}.notice strong{display:block}.notice p{margin:2px 0 0;color:#684c1d}
+    .summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:9px;box-shadow:0 12px 28px #10223512}.card{padding:18px;border-top:5px solid var(--blue)}.card.quality{border-top-color:var(--green)}.card .label{color:var(--muted);font-size:13px;font-weight:800}.card strong{display:block;margin:7px 0 4px;font-size:34px;font-variant-numeric:tabular-nums}.card small{color:var(--muted)}
+    .pill{display:inline-flex;align-items:center;gap:7px;min-height:28px;margin-top:11px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:900}.pill.ok{background:#e5f4ed;color:#075e48}.pill.warn{background:#fff1d6;color:#7d4b03}.dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+    .controls{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:18px 0}.controls label{font-size:13px;font-weight:800}.controls select{min-height:44px;margin-left:8px;padding:8px 34px 8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}.coverage{color:var(--muted);font-size:13px;font-weight:700}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.panel{padding:20px;min-width:0}.panel.full{grid-column:1/-1}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.panel h2{margin:0;font-size:20px}.panel-head p{margin:4px 0 0;color:var(--muted);font-size:13px}.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:12px;font-weight:800}.legend span{display:inline-flex;align-items:center;gap:6px}.swatch{width:22px;height:4px;border-radius:4px}.swatch.quality{background:var(--green)}.swatch.metro{background:var(--blue2)}.swatch.aseg{background:var(--amber)}
+    .chart{position:relative;width:100%;height:310px}.chart canvas{width:100%;height:100%;display:block}.chart-summary{margin:10px 0 0;color:var(--muted);font-size:13px}
+    .kpi-table{width:100%;border-collapse:collapse;font-size:13px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:7px}.kpi-table th,.kpi-table td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}.kpi-table th{position:sticky;top:0;background:#edf3f9;color:#31465a;font-size:11px;text-transform:uppercase;white-space:nowrap}.kpi-table tr:last-child td{border-bottom:0}.kpi-table td:nth-child(n+3){font-variant-numeric:tabular-nums;white-space:nowrap}.status{display:inline-flex;align-items:center;gap:6px;font-weight:900}.status.ok{color:#087358}.status.bad{color:var(--red)}
+    .method{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.method div{padding:14px;background:var(--soft);border:1px solid var(--line);border-radius:7px}.method strong{display:block;margin-bottom:4px}.method p{margin:0;color:var(--muted);font-size:13px}.footer{margin-top:22px;color:var(--muted);font-size:12px}
+    @media(max-width:900px){.hero{align-items:flex-start;flex-direction:column}.source{text-align:left}.summary,.grid,.method{grid-template-columns:1fr}.panel.full{grid-column:auto}.brandbar{align-items:flex-start;flex-direction:column}.chart{height:280px}}
+    @media(max-width:520px){.shell{width:min(100% - 24px,1320px);padding-top:24px}.brandbar{padding:14px 16px}.brand-actions{width:100%}.brand-actions a{flex:1;justify-content:center}.summary{grid-template-columns:1fr}.controls{align-items:flex-start;flex-direction:column}.controls select{margin:6px 0 0;width:100%}.card strong{font-size:30px}.panel{padding:15px}.chart{height:250px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <header class="brandbar">
+    <div class="brand"><span class="logo" aria-hidden="true"><small>GRUPO</small><strong>DISAL</strong></span><span class="brand-name">Calidad y Metrología</span></div>
+    <nav class="brand-actions" aria-label="Navegación principal"><a href="../">Inicio</a><a href="../dashboard/">Instrumentos</a><a href="../tanques/">Tanques</a></nav>
+  </header>
+  <main class="shell">
+    <section class="hero">
+      <div><p class="eyebrow">Sistema nervioso metrológico · Indicadores</p><h1>KPI consolidados de Calidad y Metrología</h1><p>Seguimiento mensual de eficacia y eficiencia para Aseguramiento de la Calidad, Gestión Metrológica y el resultado consolidado de Calidad.</p></div>
+      <div class="source"><strong>Período informado: agosto 2025 – julio 2026</strong>Fuente: KPI Calidad 2025, actualización 14/08/2026</div>
+    </section>
+
+    <aside class="notice" aria-label="Criterio de interpretación"><span aria-hidden="true">ⓘ</span><div><strong>Lectura de la eficiencia</strong><p>Los índices de eficiencia son indicadores de costo/tiempo relativo: un valor menor es mejor. No deben interpretarse como porcentajes de cumplimiento.</p></div></aside>
+
+    <section class="summary" aria-label="Resumen del último período">
+      <article class="card quality"><span class="label">Eficacia consolidada de Calidad</span><strong id="qualityEfficacy">96,41 %</strong><small>Meta ≥ 88,8 %</small><div class="pill ok"><span class="dot"></span>Conforme</div></article>
+      <article class="card quality"><span class="label">Eficiencia consolidada de Calidad</span><strong id="qualityEfficiency">138,1</strong><small>Límite ≤ 156,0</small><div class="pill ok"><span class="dot"></span>Conforme</div></article>
+      <article class="card"><span class="label">Indicadores componentes conformes</span><strong id="componentCompliance">9 de 10</strong><small>Último período disponible</small><div class="pill warn"><span class="dot"></span>1 requiere atención</div></article>
+    </section>
+
+    <div class="controls"><label for="periodSelect">Período de lectura <select id="periodSelect" aria-label="Seleccionar período"></select></label><span class="coverage" id="coverageText">Julio 2026 · 6 KPI consolidados</span></div>
+
+    <section class="grid">
+      <article class="panel"><div class="panel-head"><div><h2>Eficacia mensual</h2><p>Escala porcentual; mayor es mejor.</p></div><div class="legend"><span><i class="swatch quality"></i>Calidad</span><span><i class="swatch metro"></i>Metrología</span><span><i class="swatch aseg"></i>Aseguramiento</span></div></div><div class="chart"><canvas id="efficacyChart" role="img" aria-label="Tendencia mensual de eficacia"></canvas></div><p class="chart-summary" id="efficacySummary"></p></article>
+      <article class="panel"><div class="panel-head"><div><h2>Eficiencia mensual</h2><p>Índice relativo; menor es mejor.</p></div><div class="legend"><span><i class="swatch quality"></i>Calidad</span><span><i class="swatch metro"></i>Metrología</span><span><i class="swatch aseg"></i>Aseguramiento</span></div></div><div class="chart"><canvas id="efficiencyChart" role="img" aria-label="Tendencia mensual de eficiencia"></canvas></div><p class="chart-summary" id="efficiencySummary"></p></article>
+
+      <article class="panel full"><div class="panel-head"><div><h2>Detalle de KPI consolidados</h2><p>Valor, criterio y estado del período seleccionado.</p></div><span class="pill ok" id="consolidatedBadge"><span class="dot"></span>6 de 6 conformes</span></div><div class="table-wrap"><table class="kpi-table"><thead><tr><th>Área</th><th>Indicador</th><th>Meta / límite</th><th>Valor</th><th>Estado</th></tr></thead><tbody id="consolidatedBody"></tbody></table></div></article>
+
+      <article class="panel full"><div class="panel-head"><div><h2>Indicadores componentes</h2><p>Trazabilidad del último período disponible en el Excel.</p></div><span class="pill warn"><span class="dot"></span>Revisar reincidencia</span></div><div class="table-wrap"><table class="kpi-table"><thead><tr><th>Área</th><th>Indicador</th><th>Meta / límite</th><th>Julio 2026</th><th>Estado</th></tr></thead><tbody id="componentsBody"></tbody></table></div></article>
+
+      <article class="panel full"><div class="panel-head"><div><h2>Reglas de consolidación</h2><p>Fórmulas verificadas contra las celdas del archivo fuente.</p></div></div><div class="method"><div><strong>Eficacia de Calidad</strong><p>0,6 × eficacia de Aseguramiento + 0,4 × eficacia de Metrología.</p></div><div><strong>Eficiencia de Calidad</strong><p>0,6 × eficiencia de Aseguramiento + 0,4 × eficiencia de Metrología.</p></div><div><strong>Gobierno del dato</strong><p>La fuente oficial sigue siendo el Excel controlado; este dashboard presenta su última serie consolidada.</p></div></div></article>
+    </section>
+    <p class="footer">Gestión Metrológica y Aseguramiento de la Calidad · Grupo DISAL · Actualización del tablero: 25/08/2026</p>
+  </main>
+  <script>
+    const months=['Ago 25','Sep 25','Oct 25','Nov 25','Dic 25','Ene 26','Feb 26','Mar 26','Abr 26','May 26','Jun 26','Jul 26'];
+    const series={
+      qualityEfficacy:[90.9704,90.4736,92.58,93.2992,94.7728,94.1076,96.3644,96.4208,97.6496,96.6924,96.0512,96.4116],
+      qualityEfficiency:[21.6,47,47.3,48.9,67.7,68.1,89.8,85.9,100.8,102.4,118.6,138.1],
+      metroEfficacy:[98,97.46,97.2,96.1,97.3,96.6,96.5,97.1,98.3,97.5,97.4,97.5],
+      metroEfficiency:[54,50,56,66,62,66,70,64,54,64,64,76],
+      assuranceEfficacy:[86.284,85.816,89.5,91.432,93.088,92.446,96.274,95.968,97.216,96.154,95.152,95.686],
+      assuranceEfficiency:[0,45,41.5,37.5,71.5,69.5,103,100.5,132,128,155,179.5]
+    };
+    const consolidated=[
+      ['Aseguramiento','Eficacia de Aseguramiento de la Calidad','≥ 84',series.assuranceEfficacy,'min',84,'%'],
+      ['Aseguramiento','Eficiencia de Aseguramiento de la Calidad','≤ 200',series.assuranceEfficiency,'max',200,''],
+      ['Metrología','Eficacia de Metrología','≥ 96 %',series.metroEfficacy,'min',96,'%'],
+      ['Metrología','Eficiencia de Metrología','≤ 90',series.metroEfficiency,'max',90,''],
+      ['Calidad','Eficacia consolidada de Calidad','≥ 88,8',series.qualityEfficacy,'min',88.8,'%'],
+      ['Calidad','Eficiencia consolidada de Calidad','≤ 156,0',series.qualityEfficiency,'max',156,'']
+    ];
+    const components=[
+      ['Aseguramiento','Incidentes con análisis de causa y plan de acción','≥ 80 %',92.81,'min',80,'%'],['Aseguramiento','Alertas o tickets de calidad tratados','≥ 90 %',100,'min',90,'%'],['Aseguramiento','Tiempo de respuesta inicial','≤ 3 días',0,'max',3,' días'],['Aseguramiento','Reincidencia de incidentes','≤ 3 %',3.59,'max',3,'%'],
+      ['Metrología','Equipos calibrados conformes','≥ 95 %',97,'min',95,'%'],['Metrología','Cumplimiento del plan de calibración','≥ 98 %',98,'min',98,'%'],['Metrología','Asistencia metrológica','≥ 85 %',95,'min',85,'%'],['Metrología','Tiempo medio de respuesta','≤ 3 días',1.8,'max',3,' días'],['Metrología','Certificados digitales correctamente vinculados','≥ 95 %',100,'min',95,'%'],['Metrología','Innovación e impacto metrológico','≥ 75 %',100,'min',75,'%']
+    ];
+    const fmt=(v,d=1)=>new Intl.NumberFormat('es-AR',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v); const ok=(v,type,target)=>type==='min'?v>=target:v<=target;
+    const select=document.getElementById('periodSelect'); select.innerHTML=months.map((m,i)=>`<option value="${i}" ${i===11?'selected':''}>${m}</option>`).join('');
+    function statusMarkup(pass){return `<span class="status ${pass?'ok':'bad'}"><span class="dot"></span>${pass?'Conforme':'Requiere atención'}</span>`}
+    function renderTables(i){const rows=consolidated.map(([area,name,target,data,type,limit,unit])=>{const value=data[i],pass=ok(value,type,limit);return `<tr><td>${area}</td><td>${name}</td><td>${target}</td><td>${fmt(value,value%1?2:0)}${unit}</td><td>${statusMarkup(pass)}</td></tr>`});document.getElementById('consolidatedBody').innerHTML=rows.join('');const count=consolidated.filter(r=>ok(r[3][i],r[4],r[5])).length;document.getElementById('consolidatedBadge').innerHTML=`<span class="dot"></span>${count} de 6 conformes`;document.getElementById('consolidatedBadge').className=`pill ${count===6?'ok':'warn'}`;
+      document.getElementById('componentsBody').innerHTML=components.map(([area,name,target,value,type,limit,unit])=>`<tr><td>${area}</td><td>${name}</td><td>${target}</td><td>${fmt(value,value%1?2:0)}${unit}</td><td>${statusMarkup(ok(value,type,limit))}</td></tr>`).join('');
+      document.getElementById('qualityEfficacy').textContent=fmt(series.qualityEfficacy[i],2)+' %';document.getElementById('qualityEfficiency').textContent=fmt(series.qualityEfficiency[i],1);document.getElementById('coverageText').textContent=months[i]+' · 6 KPI consolidados';
+    }
+    function draw(canvasId,dataSets,minY,maxY,targets=[]){const canvas=document.getElementById(canvasId),box=canvas.getBoundingClientRect(),ratio=window.devicePixelRatio||1,w=Math.max(320,box.width),h=box.height;canvas.width=w*ratio;canvas.height=h*ratio;const c=canvas.getContext('2d');c.scale(ratio,ratio);c.clearRect(0,0,w,h);const pad={l:48,r:18,t:22,b:42},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b; c.font='12px Segoe UI';c.textAlign='right';c.textBaseline='middle';for(let n=0;n<=4;n++){const v=minY+(maxY-minY)*n/4,y=pad.t+ph-(n/4)*ph;c.strokeStyle='#dce4eb';c.lineWidth=1;c.beginPath();c.moveTo(pad.l,y);c.lineTo(w-pad.r,y);c.stroke();c.fillStyle='#637383';c.fillText(fmt(v,0),pad.l-8,y)}
+      targets.forEach(t=>{const y=pad.t+ph-(t.value-minY)/(maxY-minY)*ph;c.save();c.setLineDash([6,5]);c.strokeStyle=t.color;c.lineWidth=1.5;c.beginPath();c.moveTo(pad.l,y);c.lineTo(w-pad.r,y);c.stroke();c.restore()});
+      const step=pw/(months.length-1);months.forEach((m,i)=>{if(w<620&&i%2===1)return;c.fillStyle='#637383';c.textAlign='center';c.fillText(m,pad.l+i*step,h-18)});dataSets.forEach(s=>{c.strokeStyle=s.color;c.lineWidth=2.8;c.beginPath();s.data.forEach((v,i)=>{const x=pad.l+i*step,y=pad.t+ph-(v-minY)/(maxY-minY)*ph;i?c.lineTo(x,y):c.moveTo(x,y)});c.stroke();s.data.forEach((v,i)=>{const x=pad.l+i*step,y=pad.t+ph-(v-minY)/(maxY-minY)*ph;c.fillStyle='#fff';c.strokeStyle=s.color;c.lineWidth=2;c.beginPath();c.arc(x,y,4,0,Math.PI*2);c.fill();c.stroke()})})
+    }
+    function renderCharts(){draw('efficacyChart',[{data:series.qualityEfficacy,color:'#087f67'},{data:series.metroEfficacy,color:'#2f6fb0'},{data:series.assuranceEfficacy,color:'#b96b08'}],80,100,[{value:88.8,color:'#087f67'},{value:96,color:'#2f6fb0'}]);draw('efficiencyChart',[{data:series.qualityEfficiency,color:'#087f67'},{data:series.metroEfficiency,color:'#2f6fb0'},{data:series.assuranceEfficiency,color:'#b96b08'}],0,210,[{value:156,color:'#087f67'},{value:90,color:'#2f6fb0'},{value:200,color:'#b96b08'}]);document.getElementById('efficacySummary').textContent='Julio 2026: Calidad 96,41 %, Metrología 97,50 % y Aseguramiento 95,69 %.';document.getElementById('efficiencySummary').textContent='Julio 2026: Calidad 138,1; Metrología 76; Aseguramiento 179,5. Todos dentro de sus límites.'}
+    select.addEventListener('change',()=>renderTables(Number(select.value)));window.addEventListener('resize',()=>{clearTimeout(window.chartTimer);window.chartTimer=setTimeout(renderCharts,120)});renderTables(11);renderCharts();
+  </script>
+</body>
+</html>
