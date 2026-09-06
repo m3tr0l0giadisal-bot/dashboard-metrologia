@@ -817,11 +817,11 @@
   <script>
     const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
     const OBJETIVO_MENSUAL = [4,6,6,6,5,5,5,5,5,2,6,3];
-    let REALIZADO_MENSUAL_PLANILLA = [2, 13, 6, 8, 4, 8, 9, 7, 0, 0, 0, 0];
+    let REALIZADO_MENSUAL_PLANILLA = [2, 13, 6, 8, 4, 8, 10, 8, 0, 0, 0, 0];
     const PLANTAS = ['Latex Blanco','Latex Color','Revoques Text.','Sinteticos','Emulsiones','Resinas'];
     const ADMIN_EMAILS = new Set(['m3tr0l0giadisal@gmail.com', 'drivero@grupodisal.com.ar']);
     const STORAGE_BASE_VERSION = 'disal_tanques_v2_base_version';
-    const BASE_VERSION = '20260825-agosto';
+    const BASE_VERSION = '20260906-agosto';
     let currentUser = null;
 
     const PLAN = [
@@ -897,10 +897,12 @@
       ["00146","Emulsiones","TK2-101",["Mayo"]],
       ["00142","Emulsiones","Reactor 1",["Mayo"]],
       ["00602","Resinas","Reactor 2 Resinas",["Febrero", "Junio"]],
-      ["00760","Latex Blanco","TK1 LatBco(40k)",["Junio"]],
-      ["00761","Latex Blanco","TK2 LatBco(40k)",["Julio"]],
-      ["00762","Latex Blanco","TK3 LatBco(30k)",["Junio"]],
-      ["00763","Latex Blanco","TK4 LatBco(30k)",["Julio"]]
+      ["00601","Resinas","Reactor 1 Resinas",["Agosto"]],
+      ["00760","Latex Blanco","TK101 LatBco(40k)",["Junio"]],
+      ["00761","Latex Blanco","TK102 LatBco(40k)",["Julio"]],
+      ["00762","Latex Blanco","TK103 LatBco(30k)",["Junio"]],
+      ["00763","Latex Blanco","TK104 LatBco(30k)",["Julio"]],
+      ["00763","Latex Blanco","TK107 LatBco(30k)",["Julio"]]
     ];
 
     const $ = id => document.getElementById(id);
