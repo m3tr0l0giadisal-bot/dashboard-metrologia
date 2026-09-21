@@ -1,0 +1,1 @@
+# Historial de cambios\n\n## 0.1.0 — 2026-09-21\n- Arquitectura inicial del ecosistema metrológico DISAL.\n- Plan de módulos e integración.\n- Skill The Architect definida.\n
