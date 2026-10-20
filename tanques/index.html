@@ -652,7 +652,7 @@
         <div class="header-meta" aria-label="Resumen anual">
           <div class="meta-chip"><span>Objetivo anual</span><strong id="meta-objetivo">58</strong></div>
           <div class="meta-chip"><span>Realizado</span><strong id="meta-realizado">37</strong></div>
-          <div class="meta-chip"><span>Corte</span><strong>Jun 2026</strong></div>
+          <div class="meta-chip"><span>Corte</span><strong>Oct 2026</strong></div>
         </div>
         <button onclick="window.print()">Imprimir / PDF</button>
         <button class="primary" onclick="exportarCSV()">Exportar CSV</button>
@@ -661,6 +661,7 @@
     </header>
 
     <main>
+<section style="margin:16px;padding:16px;border:1px solid #d99a22;background:#fff8e6;color:#34270c"><strong>Actualización 20/10/2026 · Fuente oficial de tanques</strong><p>Incluye 68 verificaciones de la planilla y 5 registros históricos conservados pendientes de aclaración. La meta de octubre es 5.</p><p>Pendientes de identificación: 00763 se repite en TK104 (30k) y TK107 (20k); 00601 y 00602 difieren del maestro; 00783 no tiene descripción en el maestro. Cada tanque se mantiene separado por código, planta y descripción.</p></section>
       <section class="toolbar">
         <label>Planta
           <select id="filtroPlanta"></select>
@@ -816,94 +817,19 @@
 
   <script>
     const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-    const OBJETIVO_MENSUAL = [4,6,6,6,5,5,5,5,5,2,6,3];
-    let REALIZADO_MENSUAL_PLANILLA = [2, 13, 6, 8, 4, 8, 10, 8, 0, 0, 0, 0];
+    const OBJETIVO_MENSUAL = [4, 6, 6, 6, 5, 5, 5, 5, 5, 5, 6, 3];
+    let REALIZADO_MENSUAL_PLANILLA = [2, 13, 6, 8, 4, 8, 11, 11, 6, 4, 0, 0];
     const PLANTAS = ['Latex Blanco','Latex Color','Revoques Text.','Sinteticos','Emulsiones','Resinas'];
     const ADMIN_EMAILS = new Set(['m3tr0l0giadisal@gmail.com', 'drivero@grupodisal.com.ar']);
     const STORAGE_BASE_VERSION = 'disal_tanques_v2_base_version';
-    const BASE_VERSION = '20260906-agosto';
+    const BASE_VERSION = '20261020-octubre-historicos-conservados';
     let currentUser = null;
 
-    const PLAN = [
-      ['00582','Latex Blanco','TK3 LatBco',['Enero','Marzo','Abril','Octubre']],
-      ['00592','Latex Blanco','TK1 LatBco',['Marzo','Abril','Julio','Octubre']],
-      ['00593','Latex Blanco','TK2 LatBco',['Febrero','Agosto']],
-      ['00626','Latex Blanco','TK5 LatBco',['Febrero','Agosto']],
-      ['00627','Latex Blanco','TK6 LatBco',['Enero','Abril','Julio']],
-      ['00700','Latex Blanco','TK4 LatBco',['Abril','Mayo','Agosto','Noviembre']],
-      ['00644','Latex Color','TK N3 Latex Color',['Febrero']],
-      ['00663','Revoques Text.','TK3-TER',['Enero','Julio']],
-      ['00664','Revoques Text.','TK4-TER',['Enero','Julio']],
-      ['00665','Revoques Text.','TK5-TER',['Mayo','Agosto']],
-      ['00666','Revoques Text.','TK6-TER',['Agosto']],
-      ['00640','Sinteticos','TK N6 Sint',['Marzo','Septiembre']],
-      ['00643','Sinteticos','TK N3 Sint',['Abril','Noviembre']],
-      ['00649','Sinteticos','TKN1 Sint',['Mayo','Noviembre']],
-      ['00650','Sinteticos','TKN2 Sint',['Febrero','Agosto']],
-      ['00651','Sinteticos','TKN4 Sint',[]],
-      ['00652','Sinteticos','TKN5 Sint',['Marzo','Septiembre']],
-      ['00653','Sinteticos','TKN7 Sint',[]],
-      ['00654','Sinteticos','TKN8 Sint',['Junio','Diciembre']],
-      ['00655','Sinteticos','TKN9 Sint',['Marzo','Septiembre']],
-      ['00657','Sinteticos','TKN10 Sint',['Abril','Noviembre']],
-      ['00658','Sinteticos','TKN11 Sint',[]],
-      ['00659','Sinteticos','TKN12 Sint',['Marzo','Septiembre']],
-      ['00660','Sinteticos','TKN13 Sint',['Febrero','Septiembre']],
-      ['00141','Emulsiones','Reactor 2',['Mayo','Noviembre']],
-      ['00143','Emulsiones','Coloide',['Junio']],
-      ['00145','Emulsiones','TK2-201',['Mayo']],
-      ['00146','Emulsiones','TK2-101',['Junio','Diciembre']],
-      ['00142','Emulsiones','Reactor 1',['Junio','Diciembre']],
-      ['00602','Resinas','Reactor 2 Resinas',['Febrero','Julio']],
-      ['00601','Resinas','Reactor 1 Resinas',['Mayo','Noviembre']]
-    ];
+    const PLAN = [["00582", "Latex Blanco", "TK3 LatBco", ["Febrero", "Marzo", "Octubre"]], ["00592", "Latex Blanco", "TK1 LatBco", ["Marzo", "Abril", "Julio", "Octubre"]], ["00593", "Latex Blanco", "TK2 LatBco", ["Febrero", "Septiembre"]], ["00626", "Latex Blanco", "TK5 LatBco", ["Febrero"]], ["00627", "Latex Blanco", "TK6 LatBco", ["Febrero", "Junio"]], ["00700", "Latex Blanco", "TK4 LatBco", ["Febrero", "Agosto", "Noviembre"]], ["00644", "Latex Color", "TK N3 Látex Color", ["Febrero"]], ["00663", "Revoques Text.", "TK3-TER", ["Febrero", "Julio"]], ["00664", "Revoques Text.", "TK4-TER", ["Febrero", "Julio"]], ["00665", "Revoques Text.", "TK5-TER", ["Febrero", "Mayo", "Octubre"]], ["00666", "Revoques Text.", "TK6-TER", ["Febrero", "Agosto"]], ["00640", "Sinteticos", "TK N6 Sint", ["Marzo", "Septiembre"]], ["00643", "Sinteticos", "TK N3 Sint", []], ["00649", "Sinteticos", "TKN1 Sint", ["Mayo"]], ["00650", "Sinteticos", "TKN2 Sint", ["Febrero", "Agosto"]], ["00651", "Sinteticos", "TKN4 Sint", []], ["00652", "Sinteticos", "TKN5 Sint", ["Marzo", "Septiembre"]], ["00653", "Sinteticos", "TKN7 Sint", ["Enero"]], ["00654", "Sinteticos", "TKN8 Sint", ["Mayo", "Diciembre"]], ["00655", "Sinteticos", "TKN9 Sint", ["Marzo", "Septiembre"]], ["00657", "Sinteticos", "TKN10 Sint", ["Abril", "Noviembre"]], ["00658", "Sinteticos", "TKN11 Sint", ["Enero"]], ["00659", "Sinteticos", "TKN12 Sint", ["Marzo", "Septiembre"]], ["00660", "Sinteticos", "TKN13 Sint", ["Febrero", "Agosto"]], ["00141", "Emulsiones", "Reactor 2", ["Junio", "Noviembre"]], ["00143", "Emulsiones", "Coloide", ["Julio"]], ["00145", "Emulsiones", "TK2-201", []], ["00146", "Emulsiones", "TK2-101", ["Diciembre"]], ["00142", "Emulsiones", "Reactor 1", ["Diciembre"]], ["00602", "Resinas", "Reactor 2 Resinas", ["Febrero"]], ["00601", "Resinas", "Reactor 1 Resinas", ["Julio", "Noviembre"]], ["00760", "Latex Blanco", "TK101 LatBco(40k)", ["Junio", "Octubre"]], ["00761", "Latex Blanco", "TK102 LatBco(40k)", ["Julio", "Noviembre"]], ["00762", "Latex Blanco", "TK103 LatBco(30k)", ["Junio", "Octubre"]], ["00763", "Latex Blanco", "TK104 LatBco(30k)", ["Julio", "Noviembre"]], ["00783", "Latex Blanco", "TK105 LatBco(20k)", []], ["00781", "Latex Blanco", "TK106 LatBco(20k)", []], ["00763", "Latex Blanco", "TK107 LatBco(20k)", ["Noviembre"]], ["00779", "Latex Blanco", "TK108 LatBco(7k)", []], ["00780", "Latex Blanco", "TK109 LatBco(7k)", []]];
 
-    const REPROGRAMADOS = [
-      ['00665','Revoques Text.','TK5-TER',['Abril']],
-      ['00649','Sinteticos','TKN1 Sint',['Abril']],
-      ['00654','Sinteticos','TKN8 Sint',['Mayo']],
-      ['00146','Emulsiones','TK2-101',['Abril']],
-      ['00142','Emulsiones','Reactor 1',['Abril']]
-    ];
+    const REPROGRAMADOS = [["00593", "Latex Blanco", "TK2 LatBco", ["Noviembre"]], ["00644", "Latex Color", "TK N3 Látex Color", ["Enero"]], ["00665", "Revoques Text.", "TK5-TER", ["Abril", "Junio"]], ["00649", "Sinteticos", "TKN1 Sint", ["Abril"]], ["00652", "Sinteticos", "TKN5 Sint", ["Agosto"]], ["00660", "Sinteticos", "TKN13 Sint", ["Enero"]], ["00141", "Emulsiones", "Reactor 2", ["Julio"]], ["00145", "Emulsiones", "TK2-201", ["Junio", "Julio"]], ["00146", "Emulsiones", "TK2-101", ["Abril", "Mayo"]], ["00142", "Emulsiones", "Reactor 1", ["Abril", "Mayo"]], ["00602", "Resinas", "Reactor 2 Resinas", ["Junio"]]];
 
-    let REALIZADOS = [
-      ["00582","Latex Blanco","TK3 LatBco",["Febrero", "Marzo", "Abril"]],
-      ["00592","Latex Blanco","TK1 LatBco",["Marzo", "Abril", "Junio"]],
-      ["00593","Latex Blanco","TK2 LatBco",["Febrero"]],
-      ["00626","Latex Blanco","TK5 LatBco",["Febrero", "Junio"]],
-      ["00627","Latex Blanco","TK6 LatBco",["Febrero", "Abril", "Julio"]],
-      ["00700","Latex Blanco","TK4 LatBco",["Febrero", "Abril", "Mayo"]],
-      ["00644","Latex Color","TK N3 Látex Color",["Febrero", "Abril", "Junio"]],
-      ["00663","Revoques Text.","TK3-TER",["Febrero"]],
-      ["00664","Revoques Text.","TK4-TER",["Febrero"]],
-      ["00665","Revoques Text.","TK5-TER",["Febrero", "Julio", "Agosto"]],
-      ["00666","Revoques Text.","TK6-TER",["Febrero", "Junio", "Julio"]],
-      ["00640","Sinteticos","TK N6 Sint",["Marzo"]],
-      ["00643","Sinteticos","TK N3 Sint",["Abril", "Agosto"]],
-      ["00649","Sinteticos","TKN1 Sint",["Mayo", "Agosto"]],
-      ["00650","Sinteticos","TKN2 Sint",["Febrero", "Agosto"]],
-      ["00651","Sinteticos","TKN4 Sint",["Abril", "Agosto"]],
-      ["00652","Sinteticos","TKN5 Sint",["Marzo", "Agosto"]],
-      ["00653","Sinteticos","TKN7 Sint",["Enero"]],
-      ["00654","Sinteticos","TKN8 Sint",["Agosto"]],
-      ["00655","Sinteticos","TKN9 Sint",["Marzo"]],
-      ["00657","Sinteticos","TKN10 Sint",["Abril", "Junio"]],
-      ["00658","Sinteticos","TKN11 Sint",["Enero", "Julio"]],
-      ["00659","Sinteticos","TKN12 Sint",["Marzo"]],
-      ["00660","Sinteticos","TKN13 Sint",["Febrero"]],
-      ["00141","Emulsiones","Reactor 2",["Julio"]],
-      ["00143","Emulsiones","Coloide",["Julio"]],
-      ["00145","Emulsiones","TK2-201",["Julio"]],
-      ["00146","Emulsiones","TK2-101",["Mayo"]],
-      ["00142","Emulsiones","Reactor 1",["Mayo"]],
-      ["00602","Resinas","Reactor 2 Resinas",["Febrero", "Junio"]],
-      ["00601","Resinas","Reactor 1 Resinas",["Agosto"]],
-      ["00760","Latex Blanco","TK101 LatBco(40k)",["Junio"]],
-      ["00761","Latex Blanco","TK102 LatBco(40k)",["Julio"]],
-      ["00762","Latex Blanco","TK103 LatBco(30k)",["Junio"]],
-      ["00763","Latex Blanco","TK104 LatBco(30k)",["Julio"]],
-      ["00763","Latex Blanco","TK107 LatBco(30k)",["Julio"]]
-    ];
+    let REALIZADOS = [["00582", "Latex Blanco", "TK3 LatBco", ["Febrero", "Marzo", "Abril"]], ["00592", "Latex Blanco", "TK1 LatBco", ["Marzo", "Abril", "Junio"]], ["00593", "Latex Blanco", "TK2 LatBco", ["Febrero"]], ["00626", "Latex Blanco", "TK5 LatBco", ["Febrero", "Junio"]], ["00627", "Latex Blanco", "TK6 LatBco", ["Febrero", "Abril", "Julio"]], ["00700", "Latex Blanco", "TK4 LatBco", ["Febrero", "Abril", "Mayo"]], ["00644", "Latex Color", "TK N3 Látex Color", ["Febrero", "Abril", "Junio", "Septiembre"]], ["00663", "Revoques Text.", "TK3-TER", ["Febrero", "Agosto"]], ["00664", "Revoques Text.", "TK4-TER", ["Febrero", "Agosto"]], ["00665", "Revoques Text.", "TK5-TER", ["Febrero", "Julio", "Agosto", "Octubre"]], ["00666", "Revoques Text.", "TK6-TER", ["Febrero", "Junio", "Julio", "Agosto"]], ["00640", "Sinteticos", "TK N6 Sint", ["Marzo", "Octubre"]], ["00643", "Sinteticos", "TK N3 Sint", ["Abril", "Agosto"]], ["00649", "Sinteticos", "TKN1 Sint", ["Mayo", "Agosto"]], ["00650", "Sinteticos", "TKN2 Sint", ["Febrero", "Agosto"]], ["00651", "Sinteticos", "TKN4 Sint", ["Abril", "Agosto"]], ["00652", "Sinteticos", "TKN5 Sint", ["Marzo", "Agosto"]], ["00653", "Sinteticos", "TKN7 Sint", ["Enero"]], ["00654", "Sinteticos", "TKN8 Sint", ["Agosto"]], ["00655", "Sinteticos", "TKN9 Sint", ["Marzo", "Septiembre"]], ["00657", "Sinteticos", "TKN10 Sint", ["Abril", "Junio"]], ["00658", "Sinteticos", "TKN11 Sint", ["Enero", "Julio", "Octubre"]], ["00659", "Sinteticos", "TKN12 Sint", ["Marzo", "Septiembre"]], ["00660", "Sinteticos", "TKN13 Sint", ["Febrero"]], ["00146", "Emulsiones", "TK2-101", ["Mayo"]], ["00142", "Emulsiones", "Reactor 1", ["Mayo"]], ["00602", "Resinas", "Reactor 2 Resinas", ["Febrero", "Junio"]], ["00760", "Latex Blanco", "TK101 LatBco(40k)", ["Junio"]], ["00761", "Latex Blanco", "TK102 LatBco(40k)", ["Julio"]], ["00762", "Latex Blanco", "TK103 LatBco(30k)", ["Junio"]], ["00763", "Latex Blanco", "TK104 LatBco(30k)", ["Julio"]], ["00781", "Latex Blanco", "TK106 LatBco(20k)", ["Septiembre"]], ["00763", "Latex Blanco", "TK107 LatBco(20k)", ["Julio", "Octubre"]], ["00779", "Latex Blanco", "TK108 LatBco(7k)", ["Septiembre"]], ["00780", "Latex Blanco", "TK109 LatBco(7k)", ["Septiembre"]], ["00141", "Emulsiones", "Reactor 2", ["Julio"]], ["00143", "Emulsiones", "Coloide", ["Julio"]], ["00145", "Emulsiones", "TK2-201", ["Julio"]], ["00601", "Resinas", "Reactor 1 Resinas", ["Agosto"]], ["00763", "Latex Blanco", "TK107 LatBco(30k)", ["Julio"]]];
 
     const $ = id => document.getElementById(id);
     let chart;
@@ -1072,23 +998,25 @@
       };
     }
 
+    const equipoKey = r => JSON.stringify([r.codigo, r.planta, r.equipo]);
+
     function pendientesFiltrados() {
-      const realizadosKeys = new Set(realizados.map(r => `${r.codigo}|${r.mes}`));
-      return filtrarPorBase(plan).filter(p => !realizadosKeys.has(`${p.codigo}|${p.mes}`));
+      const realizadosKeys = new Set(realizados.map(r => `${equipoKey(r)}|${r.mes}`));
+      return filtrarPorBase(plan).filter(p => !realizadosKeys.has(`${equipoKey(p)}|${p.mes}`));
     }
 
     function detalleCombinado() {
       const hechosPorCodigo = new Map();
       realizados.forEach(r => {
-        if (!hechosPorCodigo.has(r.codigo)) hechosPorCodigo.set(r.codigo, []);
-        hechosPorCodigo.get(r.codigo).push(r);
+        if (!hechosPorCodigo.has(equipoKey(r))) hechosPorCodigo.set(equipoKey(r), []);
+        hechosPorCodigo.get(equipoKey(r)).push(r);
       });
 
       const filasPlan = plan.map(p => {
-        const hechos = hechosPorCodigo.get(p.codigo) || [];
+        const hechos = hechosPorCodigo.get(equipoKey(p)) || [];
         const mismoMes = hechos.find(h => h.mes === p.mes);
         const cercano = mismoMes || hechos.find(h => Math.abs(mesIdx(h.mes) - mesIdx(p.mes)) <= 1);
-        const reprog = reprogramados.some(r => r.codigo === p.codigo && r.mes === p.mes);
+        const reprog = reprogramados.some(r => equipoKey(r) === equipoKey(p) && r.mes === p.mes);
         let estado = 'Pendiente';
         let mesRealizado = '';
         let desvio = '';
@@ -1101,9 +1029,9 @@
         return { ...p, mesPlan: p.mes, mesRealizado, estado, desvio };
       });
 
-      const planKeys = new Set(plan.map(p => `${p.codigo}|${p.mes}`));
+      const planKeys = new Set(plan.map(p => `${equipoKey(p)}|${p.mes}`));
       const extras = realizados
-        .filter(r => !planKeys.has(`${r.codigo}|${r.mes}`))
+        .filter(r => !planKeys.has(`${equipoKey(r)}|${r.mes}`))
         .map(r => ({ ...r, mesPlan: '', mesRealizado: r.mes, estado: 'Adelantado/extra', desvio: '' }));
       return filasPlan.concat(extras);
     }
@@ -1149,11 +1077,11 @@
       periodoBox.className = `callout ${estado.clase === 'ok' || estado.clase === 'extra' ? 'good' : estado.clase === 'mid' ? 'warn' : 'risk'}`;
       periodoBox.innerHTML = `<strong>Periodo seleccionado</strong>${planta}, ${periodo}: ${realizado} realizados sobre ${objetivo} objetivos (${pct}%). Estado: ${estado.texto}.`;
 
-      const objAcum = OBJETIVO_MENSUAL.slice(0, 6).reduce((a,b) => a + b, 0);
-      const realAcum = REALIZADO_MENSUAL_PLANILLA.slice(0, 6).reduce((a,b) => a + b, 0);
+      const objAcum = OBJETIVO_MENSUAL.slice(0, 10).reduce((a,b) => a + b, 0);
+      const realAcum = REALIZADO_MENSUAL_PLANILLA.slice(0, 10).reduce((a,b) => a + b, 0);
       const pctAcum = Math.round(realAcum / objAcum * 100);
       acumuladoBox.className = `callout ${pctAcum >= 100 ? 'good' : pctAcum >= 50 ? 'warn' : 'risk'}`;
-      acumuladoBox.innerHTML = `<strong>Acumulado enero-junio</strong>${realAcum} realizados vs ${objAcum} objetivos. Cumplimiento acumulado: ${pctAcum}%.`;
+      acumuladoBox.innerHTML = `<strong>Acumulado enero-octubre</strong>${realAcum} realizados vs ${objAcum} objetivos. Cumplimiento acumulado: ${pctAcum}%.`;
 
       const proximos = pendientesFiltrados().slice(0, 3).map(p => `${p.codigo} ${p.equipo}`).join(', ') || 'Sin pendientes en el filtro.';
       riesgoBox.className = `callout ${pendientes === 0 ? 'good' : pendientes <= 3 ? 'warn' : 'risk'}`;
@@ -1367,8 +1295,8 @@
           if (nuevos.length === 0) throw new Error('No se encontraron verificaciones válidas en el CSV.');
           realizados = nuevos;
           REALIZADOS = Object.values(realizados.reduce((acc, r) => {
-            if (!acc[r.codigo]) acc[r.codigo] = [r.codigo, r.planta, r.equipo, []];
-            if (!acc[r.codigo][3].includes(r.mes)) acc[r.codigo][3].push(r.mes);
+            if (!acc[equipoKey(r)]) acc[equipoKey(r)] = [r.codigo, r.planta, r.equipo, []];
+            if (!acc[equipoKey(r)][3].includes(r.mes)) acc[equipoKey(r)][3].push(r.mes);
             return acc;
           }, {}));
           recalcularRealizadosMensuales();
